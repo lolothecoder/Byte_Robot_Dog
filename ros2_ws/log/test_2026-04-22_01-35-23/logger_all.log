@@ -1,0 +1,132 @@
+[1.020s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'test', '--packages-select', 'byte_leg_hardware', '--event-handlers', 'console_direct+']
+[1.021s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='test', build_base='build', install_base='install', merge_install=False, test_result_base=None, retest_until_fail=0, retest_until_pass=0, abort_on_error=False, return_code_on_test_failure=False, executor='parallel', parallel_workers=8, event_handlers=['console_direct+'], ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['byte_leg_hardware'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], ctest_args=None, python_testing=None, pytest_args=None, pytest_with_coverage=False, unittest_args=None, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x79d44f99ff50>, verb_extension=<colcon_core.verb.test.TestVerb object at 0x79d44f99dfd0>, main=<bound method TestVerb.main of <colcon_core.verb.test.TestVerb object at 0x79d44f99dfd0>>, mixin_verb=('test',))
+[1.226s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.227s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.227s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.228s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.228s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.228s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.229s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/loic-finette/Documents/byte_ws/ros2_ws'
+[1.229s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.353s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.354s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.354s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.354s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.355s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.356s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.357s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.357s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.358s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.358s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.359s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.359s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.360s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[1.361s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[1.361s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[1.362s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[1.362s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[1.363s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[1.363s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[1.363s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[1.364s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[1.365s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[1.366s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[1.366s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[1.367s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[1.367s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[1.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['ignore', 'ignore_ament_install']
+[1.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'ignore'
+[1.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'ignore_ament_install'
+[1.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['colcon_pkg']
+[1.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'colcon_pkg'
+[1.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['colcon_meta']
+[1.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'colcon_meta'
+[1.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['ros']
+[1.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'ros'
+[1.385s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_bringup' with type 'ros.ament_python' and name 'byte_leg_bringup'
+[1.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['ignore', 'ignore_ament_install']
+[1.386s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'ignore'
+[1.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'ignore_ament_install'
+[1.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['colcon_pkg']
+[1.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'colcon_pkg'
+[1.387s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['colcon_meta']
+[1.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'colcon_meta'
+[1.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['ros']
+[1.388s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'ros'
+[1.391s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_control' with type 'ros.ament_python' and name 'byte_leg_control'
+[1.392s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['ignore', 'ignore_ament_install']
+[1.392s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'ignore'
+[1.393s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'ignore_ament_install'
+[1.393s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['colcon_pkg']
+[1.394s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'colcon_pkg'
+[1.394s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['colcon_meta']
+[1.394s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'colcon_meta'
+[1.394s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['ros']
+[1.395s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'ros'
+[1.397s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_description' with type 'ros.ament_cmake' and name 'byte_leg_description'
+[1.397s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['ignore', 'ignore_ament_install']
+[1.398s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'ignore'
+[1.398s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'ignore_ament_install'
+[1.399s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['colcon_pkg']
+[1.399s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'colcon_pkg'
+[1.399s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['colcon_meta']
+[1.399s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'colcon_meta'
+[1.400s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['ros']
+[1.400s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'ros'
+[1.403s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_gazebo' with type 'ros.ament_cmake' and name 'byte_leg_gazebo'
+[1.404s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['ignore', 'ignore_ament_install']
+[1.404s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'ignore'
+[1.405s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'ignore_ament_install'
+[1.405s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['colcon_pkg']
+[1.406s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'colcon_pkg'
+[1.406s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['colcon_meta']
+[1.407s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'colcon_meta'
+[1.407s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['ros']
+[1.408s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'ros'
+[1.412s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_hardware' with type 'ros.ament_python' and name 'byte_leg_hardware'
+[1.412s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.413s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.413s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.413s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.413s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'byte_leg_control' in 'src/byte_leg_control'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'byte_leg_description' in 'src/byte_leg_description'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'byte_leg_gazebo' in 'src/byte_leg_gazebo'
+[1.426s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'byte_leg_bringup' in 'src/byte_leg_bringup'
+[1.428s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'ctest_args' from command line to 'None'
+[1.428s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'python_testing' from command line to 'None'
+[1.428s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'pytest_args' from command line to 'None'
+[1.428s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'pytest_with_coverage' from command line to 'False'
+[1.428s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'unittest_args' from command line to 'None'
+[1.428s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'retest_until_pass' from command line to '0'
+[1.429s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' test argument 'retest_until_fail' from command line to '0'
+[1.429s] DEBUG:colcon.colcon_core.verb.test:Testing package 'byte_leg_hardware' with the following arguments: {'build_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware', 'ctest_args': None, 'install_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware', 'path': '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware', 'pytest_args': None, 'pytest_with_coverage': False, 'python_testing': None, 'retest_until_fail': 0, 'retest_until_pass': 0, 'test_result_base': None, 'unittest_args': None}
+[1.429s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.432s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.434s] INFO:colcon.colcon_ros.task.ament_python.test:Testing ROS package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware' with build type'ament_python'
+[1.434s] INFO:colcon.colcon_core.task.python.test:Testing Python package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware'
+[1.446s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.447s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.447s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.717s] Level 1:colcon.colcon_core.task.python.test:test() by extension 'pytest'
+[2.720s] Level 1:colcon.colcon_core.task.python.test:test.step() by extension 'pytest'
+[2.740s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:${AMENT_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTEST_ADDOPTS=--tb=short --junit-xml=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/pytest.xml --junit-prefix=byte_leg_hardware -o cache_dir=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/.pytest_cache PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -m pytest
+[5.550s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[5.551s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[5.552s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[5.552s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[5.553s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware' returned '0': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:${AMENT_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTEST_ADDOPTS=--tb=short --junit-xml=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/pytest.xml --junit-prefix=byte_leg_hardware -o cache_dir=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/.pytest_cache PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -m pytest
+[5.578s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[5.578s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[5.578s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[5.637s] DEBUG:colcon.colcon_core.event_reactor:joined thread

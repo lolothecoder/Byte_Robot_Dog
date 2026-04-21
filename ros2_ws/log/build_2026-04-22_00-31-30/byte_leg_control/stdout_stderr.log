@@ -1,0 +1,16 @@
+running develop
+running egg_info
+writing byte_leg_control.egg-info/PKG-INFO
+writing dependency_links to byte_leg_control.egg-info/dependency_links.txt
+writing entry points to byte_leg_control.egg-info/entry_points.txt
+writing requirements to byte_leg_control.egg-info/requires.txt
+writing top-level names to byte_leg_control.egg-info/top_level.txt
+reading manifest file 'byte_leg_control.egg-info/SOURCES.txt'
+writing manifest file 'byte_leg_control.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte-leg-control.egg-link (link to .)
+Installing ik_node script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control
+Installing joy_teleop script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control
+
+Installed /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control
+running symlink_data

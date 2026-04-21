@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: byte-leg-control
+Version: 0.1.0
+Summary: Inverse kinematics and Xbox joystick teleop for the byte_leg simulation.
+Maintainer: Loic Finette
+Maintainer-email: loicfinette@gmail.com
+License: MIT

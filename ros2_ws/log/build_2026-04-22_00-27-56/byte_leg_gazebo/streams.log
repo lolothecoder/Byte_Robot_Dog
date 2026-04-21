@@ -1,0 +1,43 @@
+[0.672s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_gazebo -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo
+[1.251s] -- The C compiler identification is GNU 13.3.0
+[1.957s] -- The CXX compiler identification is GNU 13.3.0
+[2.251s] -- Detecting C compiler ABI info
+[2.693s] -- Detecting C compiler ABI info - done
+[2.750s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.752s] -- Detecting C compile features
+[2.754s] -- Detecting C compile features - done
+[2.799s] -- Detecting CXX compiler ABI info
+[3.184s] -- Detecting CXX compiler ABI info - done
+[3.227s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.229s] -- Detecting CXX compile features
+[3.230s] -- Detecting CXX compile features - done
+[3.268s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[3.875s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[4.204s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[4.868s] -- Configuring done (4.1s)
+[4.886s] -- Generating done (0.0s)
+[4.901s] -- Build files have been written to: /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo
+[4.919s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_gazebo -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo
+[4.923s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo -- -j8 -l8
+[5.068s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo -- -j8 -l8
+[5.103s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo
+[5.126s] -- Install configuration: ""
+[5.127s] -- Execute custom install script
+[5.130s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/worlds/bench.sdf
+[5.157s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/config/bridge.yaml
+[5.198s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/ament_index/resource_index/package_run_dependencies/byte_leg_gazebo
+[5.224s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/ament_index/resource_index/parent_prefix_path/byte_leg_gazebo
+[5.251s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/environment/ament_prefix_path.sh
+[5.279s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/environment/ament_prefix_path.dsv
+[5.317s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/environment/path.sh
+[5.354s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/environment/path.dsv
+[5.398s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/local_setup.bash
+[5.432s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/local_setup.sh
+[5.464s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/local_setup.zsh
+[5.499s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/local_setup.dsv
+[5.534s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.dsv
+[5.563s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/ament_index/resource_index/packages/byte_leg_gazebo
+[5.595s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/cmake/byte_leg_gazeboConfig.cmake
+[5.626s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/cmake/byte_leg_gazeboConfig-version.cmake
+[5.658s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.xml
+[5.695s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo

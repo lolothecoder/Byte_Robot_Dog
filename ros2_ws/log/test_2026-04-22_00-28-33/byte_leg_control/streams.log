@@ -1,0 +1,13 @@
+[0.665s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:${AMENT_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTEST_ADDOPTS=--tb=short --junit-xml=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/pytest.xml --junit-prefix=byte_leg_control -o cache_dir=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/.pytest_cache PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -m pytest
+[1.666s] ============================= test session starts ==============================
+[1.666s] platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0
+[1.667s] cachedir: /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/.pytest_cache
+[1.667s] rootdir: /home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control
+[1.667s] plugins: ament-xmllint-0.17.3, ament-pep257-0.17.3, ament-flake8-0.17.3, ament-copyright-0.17.3, launch-testing-3.4.9, ament-lint-0.17.3, launch-testing-ros-0.26.10, mock-3.12.0, cov-4.1.0, colcon-core-0.20.1, typeguard-4.1.5
+[1.668s] collected 52 items
+[1.668s] 
+[1.790s] test/test_ik.py ....................................................     [100%]
+[1.790s] 
+[1.790s] - generated xml file: /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/pytest.xml -
+[1.791s] ============================== 52 passed in 0.16s ==============================
+[1.891s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control' returned '0': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:${AMENT_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTEST_ADDOPTS=--tb=short --junit-xml=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/pytest.xml --junit-prefix=byte_leg_control -o cache_dir=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/.pytest_cache PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -m pytest

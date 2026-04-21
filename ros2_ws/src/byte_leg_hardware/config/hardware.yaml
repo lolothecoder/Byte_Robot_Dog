@@ -1,0 +1,23 @@
+can_relay:
+  ros__parameters:
+    port: /dev/ttyUSB0
+    baud: 2000000
+
+    # Per-joint mapping. Order must match ik_node's output order.
+    joint_names:     [hip_abduct, hip_pitch, knee]
+    can_node_ids:    [3, 5, 1]
+    gear_ratio:      [8.0, 8.0, 8.0]     # motor revs per joint rev (GIM8010-8 = 8:1)
+    sign:            [1.0, 1.0, 1.0]     # flip if motor mounted reversed vs URDF axis
+    zero_offset_rev: [0.0, 0.0, 0.0]     # motor-rev reading at URDF joint-zero
+
+    # Safety gates
+    dry_run: true                         # start safe: no SET_INPUT_POS, no state changes
+    max_joint_rad:    [1.8, 1.8, 2.5]     # reject commands exceeding these magnitudes
+    max_rate_rad_s:   [4.0, 4.0, 6.0]     # rate-limit per joint (soft-start equivalent)
+    command_timeout_s: 0.25               # no trajectory for this long -> auto-disarm
+    calibration_file: /tmp/byte_leg_calibration.yaml
+
+    # Loop rates
+    command_rate_hz:   50.0
+    state_publish_hz:  100.0
+    iq_request_hz:     30.0

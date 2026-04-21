@@ -1,0 +1,24 @@
+[2.836s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description:${CMAKE_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/build --no-deps symlink_data
+[3.923s] running develop
+[4.807s] running egg_info
+[4.807s] creating byte_leg_bringup.egg-info
+[4.883s] writing byte_leg_bringup.egg-info/PKG-INFO
+[4.884s] writing dependency_links to byte_leg_bringup.egg-info/dependency_links.txt
+[4.885s] writing requirements to byte_leg_bringup.egg-info/requires.txt
+[4.885s] writing top-level names to byte_leg_bringup.egg-info/top_level.txt
+[4.885s] writing manifest file 'byte_leg_bringup.egg-info/SOURCES.txt'
+[5.032s] reading manifest file 'byte_leg_bringup.egg-info/SOURCES.txt'
+[5.034s] writing manifest file 'byte_leg_bringup.egg-info/SOURCES.txt'
+[5.118s] running build_ext
+[5.118s] Creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages/byte-leg-bringup.egg-link (link to .)
+[5.120s] 
+[5.121s] Installed /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup
+[5.122s] running symlink_data
+[5.122s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/ament_index
+[5.122s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/ament_index/resource_index
+[5.123s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/ament_index/resource_index/packages
+[5.123s] symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/resource/byte_leg_bringup -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/ament_index/resource_index/packages
+[5.123s] symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/package.xml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup
+[5.123s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/launch
+[5.124s] symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/launch/sim.launch.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/launch
+[5.199s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup' returned '0': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description:${CMAKE_PREFIX_PATH} DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/build --no-deps symlink_data

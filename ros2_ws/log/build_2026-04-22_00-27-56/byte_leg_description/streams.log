@@ -1,0 +1,42 @@
+[0.667s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description
+[1.262s] -- The C compiler identification is GNU 13.3.0
+[1.957s] -- The CXX compiler identification is GNU 13.3.0
+[2.262s] -- Detecting C compiler ABI info
+[2.731s] -- Detecting C compiler ABI info - done
+[2.776s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.779s] -- Detecting C compile features
+[2.779s] -- Detecting C compile features - done
+[2.810s] -- Detecting CXX compiler ABI info
+[3.194s] -- Detecting CXX compiler ABI info - done
+[3.252s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.253s] -- Detecting CXX compile features
+[3.256s] -- Detecting CXX compile features - done
+[3.279s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[3.900s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[4.214s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[4.874s] -- Configuring done (4.1s)
+[4.891s] -- Generating done (0.0s)
+[4.902s] -- Build files have been written to: /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description
+[4.916s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description
+[4.924s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description -- -j8 -l8
+[5.118s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description -- -j8 -l8
+[5.121s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description
+[5.147s] -- Install configuration: ""
+[5.149s] -- Execute custom install script
+[5.151s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/urdf/leg.urdf.xacro
+[5.179s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/ament_index/resource_index/package_run_dependencies/byte_leg_description
+[5.217s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/ament_index/resource_index/parent_prefix_path/byte_leg_description
+[5.246s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/environment/ament_prefix_path.sh
+[5.276s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/environment/ament_prefix_path.dsv
+[5.306s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/environment/path.sh
+[5.343s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/environment/path.dsv
+[5.388s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/local_setup.bash
+[5.416s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/local_setup.sh
+[5.456s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/local_setup.zsh
+[5.496s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/local_setup.dsv
+[5.525s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.dsv
+[5.573s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/ament_index/resource_index/packages/byte_leg_description
+[5.601s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/cmake/byte_leg_descriptionConfig.cmake
+[5.635s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/cmake/byte_leg_descriptionConfig-version.cmake
+[5.676s] -- Symlinking: /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.xml
+[5.770s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description

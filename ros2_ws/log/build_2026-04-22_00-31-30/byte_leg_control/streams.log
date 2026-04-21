@@ -1,0 +1,18 @@
+[2.895s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build --no-deps symlink_data
+[3.988s] running develop
+[4.756s] running egg_info
+[4.830s] writing byte_leg_control.egg-info/PKG-INFO
+[4.830s] writing dependency_links to byte_leg_control.egg-info/dependency_links.txt
+[4.833s] writing entry points to byte_leg_control.egg-info/entry_points.txt
+[4.834s] writing requirements to byte_leg_control.egg-info/requires.txt
+[4.834s] writing top-level names to byte_leg_control.egg-info/top_level.txt
+[4.978s] reading manifest file 'byte_leg_control.egg-info/SOURCES.txt'
+[4.989s] writing manifest file 'byte_leg_control.egg-info/SOURCES.txt'
+[5.074s] running build_ext
+[5.074s] Creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte-leg-control.egg-link (link to .)
+[5.075s] Installing ik_node script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control
+[5.076s] Installing joy_teleop script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control
+[5.077s] 
+[5.078s] Installed /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control
+[5.078s] running symlink_data
+[5.162s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build --no-deps symlink_data
