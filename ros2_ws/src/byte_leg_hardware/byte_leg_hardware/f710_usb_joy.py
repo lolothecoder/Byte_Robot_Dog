@@ -92,45 +92,61 @@ class F710Bridge(Node):
         if len(data) < 8:
             return
 
-        # F710 DirectInput report (8 bytes, observed):
-        #   0: LX  (0..255, center 128)
-        #   1: LY  (0..255, center 128, 0 = up)
-        #   2: RX  (0..255, center 128)
-        #   3: RY  (0..255, center 128, 0 = up)
-        #   4: hat (low nibble: 0..7 = dir CW from N, 8 = released)
-        #   5: buttons_lo  (X=0, A=1, B=2, Y=3, LB=4, RB=5, LT=6, RT=7)
-        #   6: buttons_hi  (BACK=0, START=1, LStick=2, RStick=3)
-        #   7: reserved
-        lx, ly, rx, ry, hat, b_lo, b_hi, _ = struct.unpack('BBBBBBBB', data[:8])
+        # F710 DirectInput report (observed on this unit):
+        #   0: report ID (always 0x01)
+        #   1: LX  (0..255, center 128, right = 0xFF)
+        #   2: LY  (0..255, center 128, up = 0x00)
+        #   3: RX  (0..255, center 128)
+        #   4: RY  (0..255, center 128, up = 0x00)
+        #   5: low nibble = hat (0..7 CW from N, 8 = released)
+        #      high nibble = face buttons: X bit4, A bit5, B bit6, Y bit7
+        #   6: shoulder/stick: LB(0) RB(1) LT(2) RT(3)
+        #                      BACK(4) START(5) LStick(6) RStick(7)
+        #   7: battery / status (ignored)
+        _id, lx, ly, rx, ry, hat_face, shoulder, _ = struct.unpack(
+            'BBBBBBBB', data[:8]
+        )
 
         def ax(v: int, invert: bool = False) -> float:
             x = (v - 128) / 127.0
             return -x if invert else x
 
-        # Match the axis layout the joy package emits by default
-        # (axis 0 = LX right=+, 1 = LY up=+, 3 = RX right=+, 4 = RY up=+),
-        # and place D-pad on axes 6/7 to match xpad-style layout.
         axes = [
             ax(lx),                     # 0  left X  (right +)
             ax(ly, invert=True),        # 1  left Y  (up +)
-            0.0,                        # 2  LT (analog) — F710 reports digital, leave 0
-            ax(rx),                     # 3  right X (right +)
-            ax(ry, invert=True),        # 4  right Y (up +)
-            0.0,                        # 5  RT (analog) — same caveat
+            0.0,                        # 2  LT (digital on F710)
+            ax(rx),                     # 3  right X
+            ax(ry, invert=True),        # 4  right Y
+            0.0,                        # 5  RT (digital)
             0.0,                        # 6  D-pad X
             0.0,                        # 7  D-pad Y
         ]
+        hat = hat_face & 0x0F
         if hat != 0x08:
-            # Hat directions, CW from N: 0=N,1=NE,2=E,3=SE,4=S,5=SW,6=W,7=NW
+            # CW from N: 0=N,1=NE,2=E,3=SE,4=S,5=SW,6=W,7=NW
             dx_lookup = (0, 1, 1, 1, 0, -1, -1, -1)
             dy_lookup = (1, 1, 0, -1, -1, -1, 0, 1)
             axes[6] = float(dx_lookup[hat & 0x07])
             axes[7] = float(dy_lookup[hat & 0x07])
 
-        # Buttons: 8 from b_lo, 4 from b_hi, then 0-pad to 11 to match xpad's
-        # default button count (the LT/RT digital bits are already in b_lo).
-        buttons_packed = b_lo | (b_hi << 8)
-        buttons = [(buttons_packed >> i) & 1 for i in range(12)]
+        # xpad-style button order so joy_teleop's defaults
+        # (button_home=0=A, button_enable=5=RB) match without remapping.
+        face_X = (hat_face >> 4) & 1
+        face_A = (hat_face >> 5) & 1
+        face_B = (hat_face >> 6) & 1
+        face_Y = (hat_face >> 7) & 1
+        buttons = [
+            face_A, face_B, face_X, face_Y,
+            (shoulder >> 0) & 1,        # 4  LB
+            (shoulder >> 1) & 1,        # 5  RB
+            (shoulder >> 4) & 1,        # 6  BACK
+            (shoulder >> 5) & 1,        # 7  START
+            0,                          # 8  LOGO placeholder (no button on F710)
+            (shoulder >> 6) & 1,        # 9  LStick
+            (shoulder >> 7) & 1,        # 10 RStick
+            (shoulder >> 2) & 1,        # 11 LT (digital)
+            (shoulder >> 3) & 1,        # 12 RT (digital)
+        ]
 
         msg = Joy()
         msg.header.stamp = self.get_clock().now().to_msg()

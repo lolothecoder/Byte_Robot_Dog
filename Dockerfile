@@ -5,6 +5,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
       python3-colcon-common-extensions \
       python3-serial \
+      python3-usb \
+      libusb-1.0-0 \
       ros-jazzy-xacro \
       ros-jazzy-joy \
       ros-jazzy-robot-state-publisher \
