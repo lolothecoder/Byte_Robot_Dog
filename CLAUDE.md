@@ -73,7 +73,9 @@ colcon test --packages-select byte_leg_control --event-handlers console_direct+
 
 ## Real hardware (`byte_leg_hardware` + `real.launch.py`)
 
-`ros2_ws/src/byte_leg_hardware/` provides a Python CAN bridge (`can_relay`) that subscribes to the same `/leg_controller/joint_trajectory` topic the sim's JTC consumes, converts joint radians to motor revolutions, and talks ODrive CAN Simple over a Waveshare USB-CAN adapter — identical framing to `tune.py`. Encoder + Iq are read back and published as `/joint_states` and `/real_leg/iq`. **No `ros2_control`, no JTC on the real side** — ODrive's own PASSTHROUGH position filter handles smoothing.
+`ros2_ws/src/byte_leg_hardware/` provides a Python CAN bridge (`can_relay`) that subscribes to the same `/leg_controller/joint_trajectory` topic the sim's JTC consumes, converts joint radians to motor revolutions, and talks ODrive CAN Simple over a Waveshare USB-CAN adapter — identical framing to `tune.py`. Encoder estimates are read back from each ODrive's cyclic broadcast and published as `/joint_states`. **No `ros2_control`, no JTC on the real side** — ODrive's own PASSTHROUGH position filter handles smoothing. Health metrics are published at 2 Hz on `/real_leg/diag` (`Float32MultiArray`: tx_tick_period_ms_p99, rx_frames_per_s, sync_resync_count, encoder_age_ms_max — see `byte_leg_hardware/README.md`).
+
+**One-time ODrive setup**: each ODrive must have `axis0.config.can.encoder_msg_rate_ms = 10` saved via `odrivetool`. Without it the bridge sees no encoder data, `/joint_states` stays zero, and `/real_leg/arm` refuses. Iq is no longer polled — set `iq_msg_rate_ms` to a non-zero value if you want it as a cyclic broadcast.
 
 **Node-ID map (fixed)**: `knee = 1`, `hip_abduct = 3`, `hip_pitch = 5`. Configured in `byte_leg_hardware/config/hardware.yaml` as the `can_node_ids` list. GIM8010-8 is 8:1 motor-side, so `motor_rev = 8 × joint_rad / (2π)` — encoded in `gear_ratio: [8.0, 8.0, 8.0]`.
 

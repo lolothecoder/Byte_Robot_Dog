@@ -1,0 +1,36 @@
+running develop
+Removing /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte-leg-hardware.egg-link (link to .)
+running egg_info
+writing ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/PKG-INFO
+writing dependency_links to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/dependency_links.txt
+writing entry points to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/entry_points.txt
+writing requirements to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/requires.txt
+writing top-level names to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/top_level.txt
+reading manifest file '../../build/byte_leg_hardware/byte_leg_hardware.egg-info/SOURCES.txt'
+writing manifest file '../../build/byte_leg_hardware/byte_leg_hardware.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build
+creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib
+creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+copying byte_leg_hardware/can_waveshare.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+copying byte_leg_hardware/can_relay.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+copying byte_leg_hardware/__init__.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+running install
+running install_lib
+creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware/can_waveshare.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware/can_relay.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware/__init__.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware/can_waveshare.py to can_waveshare.cpython-312.pyc
+byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware/can_relay.py to can_relay.cpython-312.pyc
+byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware/__init__.py to __init__.cpython-312.pyc
+running install_data
+copying resource/byte_leg_hardware -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/ament_index/resource_index/packages
+copying package.xml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware
+copying config/hardware.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/config
+running install_egg_info
+Copying ../../build/byte_leg_hardware/byte_leg_hardware.egg-info to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware-0.1.0-py3.12.egg-info
+running install_scripts
+Installing can_relay script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/byte_leg_hardware
+writing list of installed files to '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/install.log'

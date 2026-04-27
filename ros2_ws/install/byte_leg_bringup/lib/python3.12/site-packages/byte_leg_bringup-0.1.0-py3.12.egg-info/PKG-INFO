@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: byte-leg-bringup
+Version: 0.1.0
+Summary: Top-level launch for the byte_leg Gazebo simulation.
+Maintainer: Loic Finette
+Maintainer-email: loicfinette@gmail.com
+License: MIT

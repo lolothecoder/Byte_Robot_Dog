@@ -1,1 +1,0 @@
-/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_bringup/setup.py

@@ -1,0 +1,81 @@
+[0.000000] (-) TimerEvent: {}
+[0.000153] (-) JobUnselected: {'identifier': 'byte_leg_bringup'}
+[0.000746] (-) JobUnselected: {'identifier': 'byte_leg_description'}
+[0.001524] (-) JobUnselected: {'identifier': 'byte_leg_gazebo'}
+[0.001595] (-) JobUnselected: {'identifier': 'byte_leg_hardware'}
+[0.001652] (byte_leg_control) JobQueued: {'identifier': 'byte_leg_control', 'dependencies': OrderedDict()}
+[0.001708] (byte_leg_control) JobStarted: {'identifier': 'byte_leg_control'}
+[0.099207] (-) TimerEvent: {}
+[0.199479] (-) TimerEvent: {}
+[0.300181] (-) TimerEvent: {}
+[0.400409] (-) TimerEvent: {}
+[0.500667] (-) TimerEvent: {}
+[0.600915] (-) TimerEvent: {}
+[0.701515] (-) TimerEvent: {}
+[0.802047] (-) TimerEvent: {}
+[0.902495] (-) TimerEvent: {}
+[1.002765] (-) TimerEvent: {}
+[1.103024] (-) TimerEvent: {}
+[1.203285] (-) TimerEvent: {}
+[1.303542] (-) TimerEvent: {}
+[1.404107] (-) TimerEvent: {}
+[1.504387] (-) TimerEvent: {}
+[1.604809] (-) TimerEvent: {}
+[1.705086] (-) TimerEvent: {}
+[1.805364] (-) TimerEvent: {}
+[1.905617] (-) TimerEvent: {}
+[2.005884] (-) TimerEvent: {}
+[2.106170] (-) TimerEvent: {}
+[2.206574] (-) TimerEvent: {}
+[2.307043] (-) TimerEvent: {}
+[2.407598] (-) TimerEvent: {}
+[2.507866] (-) TimerEvent: {}
+[2.608162] (-) TimerEvent: {}
+[2.708409] (-) TimerEvent: {}
+[2.760019] (byte_leg_control) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build', '--no-deps', 'symlink_data', '--force'], 'cwd': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'PYTHON_BASIC_REPL': '1', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'loic-finette', 'CLAUDE_CODE_ENTRYPOINT': 'cli', 'FONTCONFIG_PATH': '/etc/fonts', 'GZ_CONFIG_PATH': '/opt/ros/jazzy/opt/gz_launch_vendor/share/gz:/opt/ros/jazzy/opt/gz_sim_vendor/share/gz:/opt/ros/jazzy/opt/sdformat_vendor/share/gz:/opt/ros/jazzy/opt/gz_gui_vendor/share/gz:/opt/ros/jazzy/opt/gz_transport_vendor/share/gz:/opt/ros/jazzy/opt/gz_rendering_vendor/share/gz:/opt/ros/jazzy/opt/gz_plugin_vendor/share/gz:/opt/ros/jazzy/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/jazzy/opt/gz_msgs_vendor/share/gz:/opt/ros/jazzy/opt/gz_common_vendor/share/gz', 'GIT_EDITOR': 'true', 'GIO_MODULE_DIR': '/home/loic-finette/snap/code/common/.cache/gio-modules', 'XDG_SESSION_TYPE': 'x11', 'GIT_ASKPASS': '/snap/code/233/usr/share/code/resources/app/extensions/git/dist/askpass.sh', 'GTK_EXE_PREFIX_VSCODE_SNAP_ORIG': '', 'GDK_BACKEND_VSCODE_SNAP_ORIG': '', 'CLUTTER_DISABLE_MIPMAPPED_TEXT': '1', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/gz_launch_vendor/lib:/opt/ros/jazzy/opt/gz_sim_vendor/lib:/opt/ros/jazzy/opt/gz_sensors_vendor/lib:/opt/ros/jazzy/opt/gz_physics_vendor/lib:/opt/ros/jazzy/opt/sdformat_vendor/lib:/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_gui_vendor/lib:/opt/ros/jazzy/opt/gz_transport_vendor/lib:/opt/ros/jazzy/opt/gz_rendering_vendor/lib:/opt/ros/jazzy/opt/gz_plugin_vendor/lib:/opt/ros/jazzy/opt/gz_fuel_tools_vendor/lib:/opt/ros/jazzy/opt/gz_msgs_vendor/lib:/opt/ros/jazzy/opt/gz_common_vendor/lib:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_tools_vendor/lib:/opt/ros/jazzy/opt/gz_ogre_next_vendor/lib:/opt/ros/jazzy/opt/gz_dartsim_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/loic-finette', 'CHROME_DESKTOP': 'code.desktop', 'LOCPATH_VSCODE_SNAP_ORIG': '', 'TERM_PROGRAM_VERSION': '1.117.0', 'DESKTOP_SESSION': 'ubuntu', 'GTK_PATH': '/snap/code/235/usr/lib/x86_64-linux-gnu/gtk-3.0', 'NVM_BIN': '/home/loic-finette/.nvm/versions/node/v20.20.2/bin', 'NVM_INC': '/home/loic-finette/.nvm/versions/node/v20.20.2/include/node', 'XDG_DATA_HOME_VSCODE_SNAP_ORIG': '', 'GTK_IM_MODULE_FILE': '/home/loic-finette/snap/code/common/.cache/immodules/immodules.cache', 'GIO_LAUNCHED_DESKTOP_FILE': '/var/lib/snapd/desktop/applications/code_code.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge:appmenu-gtk-module', 'GSETTINGS_SCHEMA_DIR_VSCODE_SNAP_ORIG': '', 'VSCODE_GIT_ASKPASS_MAIN': '/snap/code/233/usr/share/code/resources/app/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/snap/code/233/usr/share/code/code', 'MANAGERPID': '2553', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'SYSTEMD_EXEC_PID': '2970', 'BUNDLED_DEBUGPY_PATH': '/home/loic-finette/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/libs/debugpy', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '5282', 'NVM_DIR': '/home/loic-finette/.nvm', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'loic-finette', 'JOURNAL_STREAM': '9:19234', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_CONFIG_DIRS_VSCODE_SNAP_ORIG': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@x11.service/memory.pressure', 'CLAUDE_CODE_SSE_PORT': '34954', 'XDG_SESSION_CLASS': 'user', 'XDG_DATA_DIRS_VSCODE_SNAP_ORIG': '/usr/share/ubuntu:/usr/share/gnome:/home/loic-finette/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'USERNAME': 'loic-finette', 'STM32_PRG_PATH': '/home/loic-finette/STMicroelectronics/STM32Cube/STM32CubeProgrammer/binsource', 'TERM': 'xterm-256color', 'OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE': 'delta', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'FC_FONTATIONS': '1', 'WINDOWPATH': '2', 'PATH': '/home/loic-finette/.local/bin:/home/loic-finette/.nvm/versions/node/v20.20.2/bin:/opt/ros/jazzy/opt/gz_msgs_vendor/bin:/opt/ros/jazzy/opt/gz_tools_vendor/bin:/opt/ros/jazzy/opt/gz_ogre_next_vendor/bin:/opt/ros/jazzy/bin:/home/loic-finette/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/loic-finette/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts', 'SESSION_MANAGER': 'local/shrimpsPC:@/tmp/.ICE-unix/2912,unix/shrimpsPC:/tmp/.ICE-unix/2912', 'GTK_EXE_PREFIX': '/snap/code/235/usr', 'INVOCATION_ID': '535c848975e54998878f6cbbc86c32c8', 'PYTHON_EXECUTABLE': '/usr/bin/python3', 'COREPACK_ENABLE_AUTO_PIN': '0', 'XDG_MENU_PREFIX': 'gnome-', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'DISPLAY': ':1', 'LOCPATH': '/snap/code/235/usr/lib/locale', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/loic-finette/.vscode/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-16c4bea7c4c97044.txt', 'NoDefaultCurrentDirectoryInExePath': '1', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'PYTHONSTARTUP': '/home/loic-finette/.config/Code/User/workspaceStorage/b38cd849f122f96a4904ab23115156c8/ms-python.python/pythonrc.py', 'GIO_MODULE_DIR_VSCODE_SNAP_ORIG': '', 'XDG_DATA_HOME': '/home/loic-finette/snap/code/235/.local/share', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/gdm/Xauthority', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-34f0035b64.sock', 'TERM_PROGRAM': 'vscode', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'GSETTINGS_SCHEMA_DIR': '/home/loic-finette/snap/code/235/.local/share/glib-2.0/schemas', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GTK_PATH_VSCODE_SNAP_ORIG': '', 'FONTCONFIG_FILE': '/etc/fonts/fonts.conf', 'CLAUDECODE': '1', 'GTK_IM_MODULE_FILE_VSCODE_SNAP_ORIG': '', 'GPG_AGENT_INFO': '/run/user/1000/gnupg/S.gpg-agent:0:1', 'GJS_DEBUG_OUTPUT': 'stderr', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'NVM_CD_FLAGS': '', 'XDG_DATA_DIRS': '/home/loic-finette/snap/code/235/.local/share/flatpak/exports/share:/home/loic-finette/snap/code/235/.local/share:/home/loic-finette/snap/code/235:/snap/code/235/usr/share:/usr/share/ubuntu:/usr/share/gnome:/home/loic-finette/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'CLAUDE_CODE_EXECPATH': '/home/loic-finette/snap/code/233/.local/share/claude/versions/2.1.118', 'QTWEBENGINE_DICTIONARIES_PATH': '/usr/share/hunspell-bdic/', 'PYTHONPATH': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'Python3_EXECUTABLE': '/usr/bin/python3', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_launch_vendor:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor'}, 'shell': False}
+[2.808522] (-) TimerEvent: {}
+[2.908760] (-) TimerEvent: {}
+[3.009030] (-) TimerEvent: {}
+[3.109352] (-) TimerEvent: {}
+[3.209625] (-) TimerEvent: {}
+[3.309874] (-) TimerEvent: {}
+[3.410503] (-) TimerEvent: {}
+[3.510985] (-) TimerEvent: {}
+[3.614166] (-) TimerEvent: {}
+[3.714396] (-) TimerEvent: {}
+[3.814605] (-) TimerEvent: {}
+[3.865405] (byte_leg_control) StdoutLine: {'line': b'running develop\n'}
+[3.914728] (-) TimerEvent: {}
+[4.015217] (-) TimerEvent: {}
+[4.115618] (-) TimerEvent: {}
+[4.215886] (-) TimerEvent: {}
+[4.316159] (-) TimerEvent: {}
+[4.416413] (-) TimerEvent: {}
+[4.516676] (-) TimerEvent: {}
+[4.616915] (-) TimerEvent: {}
+[4.637644] (byte_leg_control) StdoutLine: {'line': b'running egg_info\n'}
+[4.714825] (byte_leg_control) StdoutLine: {'line': b'writing byte_leg_control.egg-info/PKG-INFO\n'}
+[4.715472] (byte_leg_control) StdoutLine: {'line': b'writing dependency_links to byte_leg_control.egg-info/dependency_links.txt\n'}
+[4.717012] (byte_leg_control) StdoutLine: {'line': b'writing entry points to byte_leg_control.egg-info/entry_points.txt\n'}
+[4.717786] (-) TimerEvent: {}
+[4.717859] (byte_leg_control) StdoutLine: {'line': b'writing requirements to byte_leg_control.egg-info/requires.txt\n'}
+[4.718368] (byte_leg_control) StdoutLine: {'line': b'writing top-level names to byte_leg_control.egg-info/top_level.txt\n'}
+[4.821203] (-) TimerEvent: {}
+[4.885451] (byte_leg_control) StdoutLine: {'line': b"reading manifest file 'byte_leg_control.egg-info/SOURCES.txt'\n"}
+[4.888302] (byte_leg_control) StdoutLine: {'line': b"writing manifest file 'byte_leg_control.egg-info/SOURCES.txt'\n"}
+[4.923200] (-) TimerEvent: {}
+[4.981707] (byte_leg_control) StdoutLine: {'line': b'running build_ext\n'}
+[4.984267] (byte_leg_control) StdoutLine: {'line': b'Creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte-leg-control.egg-link (link to .)\n'}
+[4.985836] (byte_leg_control) StdoutLine: {'line': b'Installing ik_node script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control\n'}
+[4.986220] (byte_leg_control) StdoutLine: {'line': b'Installing joy_teleop script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control\n'}
+[4.988409] (byte_leg_control) StdoutLine: {'line': b'\n'}
+[4.988715] (byte_leg_control) StdoutLine: {'line': b'Installed /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control\n'}
+[4.989005] (byte_leg_control) StdoutLine: {'line': b'running symlink_data\n'}
+[4.989306] (byte_leg_control) StdoutLine: {'line': b'symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/resource/byte_leg_control -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/ament_index/resource_index/packages\n'}
+[4.989588] (byte_leg_control) StdoutLine: {'line': b'symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/package.xml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control\n'}
+[4.993182] (byte_leg_control) StdoutLine: {'line': b'symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/config/teleop.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/config\n'}
+[4.993680] (byte_leg_control) StdoutLine: {'line': b'symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/config/controllers.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/config\n'}
+[5.023332] (-) TimerEvent: {}
+[5.081609] (byte_leg_control) CommandEnded: {'returncode': 0}
+[5.117751] (byte_leg_control) JobEnded: {'identifier': 'byte_leg_control', 'rc': 0}
+[5.119648] (-) EventReactorShutdown: {}

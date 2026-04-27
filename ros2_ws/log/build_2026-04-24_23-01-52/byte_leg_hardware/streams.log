@@ -1,0 +1,17 @@
+[2.760s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build --no-deps symlink_data
+[4.005s] running develop
+[4.845s] running egg_info
+[4.931s] writing byte_leg_hardware.egg-info/PKG-INFO
+[4.932s] writing dependency_links to byte_leg_hardware.egg-info/dependency_links.txt
+[4.933s] writing entry points to byte_leg_hardware.egg-info/entry_points.txt
+[4.933s] writing requirements to byte_leg_hardware.egg-info/requires.txt
+[4.934s] writing top-level names to byte_leg_hardware.egg-info/top_level.txt
+[5.124s] reading manifest file 'byte_leg_hardware.egg-info/SOURCES.txt'
+[5.128s] writing manifest file 'byte_leg_hardware.egg-info/SOURCES.txt'
+[5.224s] running build_ext
+[5.226s] Creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte-leg-hardware.egg-link (link to .)
+[5.229s] Installing can_relay script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/byte_leg_hardware
+[5.230s] 
+[5.231s] Installed /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware
+[5.231s] running symlink_data
+[5.325s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build --no-deps symlink_data

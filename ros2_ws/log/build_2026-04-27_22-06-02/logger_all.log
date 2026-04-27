@@ -1,0 +1,355 @@
+[0.121s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.121s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=8, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x733683393290>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x733683e70950>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x733683e70950>>, mixin_verb=('build',))
+[0.160s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.160s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.160s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.160s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.160s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.160s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.161s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/loic-finette/Documents/byte_ws/ros2_ws'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.161s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.189s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.189s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.189s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.189s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.189s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.189s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.190s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.191s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['ignore', 'ignore_ament_install']
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'ignore'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'ignore_ament_install'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['colcon_pkg']
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'colcon_pkg'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['colcon_meta']
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'colcon_meta'
+[0.192s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extensions ['ros']
+[0.193s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_bringup) by extension 'ros'
+[0.196s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_bringup' with type 'ros.ament_python' and name 'byte_leg_bringup'
+[0.196s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['ignore', 'ignore_ament_install']
+[0.196s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'ignore'
+[0.196s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'ignore_ament_install'
+[0.196s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['colcon_pkg']
+[0.196s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'colcon_pkg'
+[0.197s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['colcon_meta']
+[0.197s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'colcon_meta'
+[0.197s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extensions ['ros']
+[0.197s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_control) by extension 'ros'
+[0.198s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_control' with type 'ros.ament_python' and name 'byte_leg_control'
+[0.198s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['ignore', 'ignore_ament_install']
+[0.198s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'ignore'
+[0.198s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'ignore_ament_install'
+[0.198s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['colcon_pkg']
+[0.198s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'colcon_pkg'
+[0.198s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['colcon_meta']
+[0.199s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'colcon_meta'
+[0.199s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extensions ['ros']
+[0.199s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_description) by extension 'ros'
+[0.200s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_description' with type 'ros.ament_cmake' and name 'byte_leg_description'
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['ignore', 'ignore_ament_install']
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'ignore'
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'ignore_ament_install'
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['colcon_pkg']
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'colcon_pkg'
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['colcon_meta']
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'colcon_meta'
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extensions ['ros']
+[0.200s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_gazebo) by extension 'ros'
+[0.201s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_gazebo' with type 'ros.ament_cmake' and name 'byte_leg_gazebo'
+[0.201s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['ignore', 'ignore_ament_install']
+[0.201s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'ignore'
+[0.201s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'ignore_ament_install'
+[0.202s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['colcon_pkg']
+[0.202s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'colcon_pkg'
+[0.202s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['colcon_meta']
+[0.202s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'colcon_meta'
+[0.202s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extensions ['ros']
+[0.202s] Level 1:colcon.colcon_core.package_identification:_identify(src/byte_leg_hardware) by extension 'ros'
+[0.202s] DEBUG:colcon.colcon_core.package_identification:Package 'src/byte_leg_hardware' with type 'ros.ament_python' and name 'byte_leg_hardware'
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.221s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.221s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.223s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 5 installed packages in /home/loic-finette/Documents/byte_ws/ros2_ws/install
+[0.225s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 386 installed packages in /opt/ros/jazzy
+[0.226s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'cmake_args' from command line to 'None'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'cmake_target' from command line to 'None'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'cmake_clean_cache' from command line to 'False'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'cmake_clean_first' from command line to 'False'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'cmake_force_configure' from command line to 'False'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'ament_cmake_args' from command line to 'None'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'catkin_cmake_args' from command line to 'None'
+[0.303s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_control' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.303s] DEBUG:colcon.colcon_core.verb:Building package 'byte_leg_control' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control', 'merge_install': False, 'path': '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control', 'symlink_install': False, 'test_result_base': None}
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'cmake_args' from command line to 'None'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'cmake_target' from command line to 'None'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'cmake_clean_cache' from command line to 'False'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'cmake_clean_first' from command line to 'False'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'cmake_force_configure' from command line to 'False'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'ament_cmake_args' from command line to 'None'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'catkin_cmake_args' from command line to 'None'
+[0.304s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_description' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.304s] DEBUG:colcon.colcon_core.verb:Building package 'byte_leg_description' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description', 'merge_install': False, 'path': '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_description', 'symlink_install': False, 'test_result_base': None}
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'cmake_args' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'cmake_target' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'cmake_clean_cache' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'cmake_clean_first' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'cmake_force_configure' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'ament_cmake_args' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'catkin_cmake_args' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_gazebo' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.305s] DEBUG:colcon.colcon_core.verb:Building package 'byte_leg_gazebo' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo', 'merge_install': False, 'path': '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_gazebo', 'symlink_install': False, 'test_result_base': None}
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'cmake_args' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'cmake_target' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'cmake_clean_cache' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'cmake_clean_first' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'cmake_force_configure' from command line to 'False'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'ament_cmake_args' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'catkin_cmake_args' from command line to 'None'
+[0.305s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_hardware' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.305s] DEBUG:colcon.colcon_core.verb:Building package 'byte_leg_hardware' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware', 'merge_install': False, 'path': '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware', 'symlink_install': False, 'test_result_base': None}
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'cmake_args' from command line to 'None'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'cmake_target' from command line to 'None'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'cmake_clean_cache' from command line to 'False'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'cmake_clean_first' from command line to 'False'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'cmake_force_configure' from command line to 'False'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'ament_cmake_args' from command line to 'None'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'catkin_cmake_args' from command line to 'None'
+[0.306s] Level 5:colcon.colcon_core.verb:set package 'byte_leg_bringup' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.306s] DEBUG:colcon.colcon_core.verb:Building package 'byte_leg_bringup' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup', 'merge_install': False, 'path': '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_bringup', 'symlink_install': False, 'test_result_base': None}
+[0.306s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.307s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.307s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control' with build type 'ament_python'
+[0.307s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_control', 'ament_prefix_path')
+[0.310s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.310s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/hook/ament_prefix_path.ps1'
+[0.312s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/hook/ament_prefix_path.dsv'
+[0.312s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/hook/ament_prefix_path.sh'
+[0.313s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.313s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.318s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_description' with build type 'ament_cmake'
+[0.318s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_description'
+[0.319s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.319s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.324s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_gazebo' with build type 'ament_cmake'
+[0.324s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_gazebo'
+[0.324s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.324s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.328s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware' with build type 'ament_python'
+[0.328s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_hardware', 'ament_prefix_path')
+[0.329s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/hook/ament_prefix_path.ps1'
+[0.329s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/hook/ament_prefix_path.dsv'
+[0.330s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/hook/ament_prefix_path.sh'
+[0.330s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.330s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.596s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control'
+[0.596s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.596s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.606s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description -- -j8 -l8
+[0.613s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo -- -j8 -l8
+[0.906s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware'
+[0.906s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.907s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.917s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description -- -j8 -l8
+[0.950s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description
+[0.951s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo -- -j8 -l8
+[0.968s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo
+[0.989s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_description)
+[0.990s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_description
+[0.992s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description' for CMake module files
+[0.993s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description' for CMake config files
+[0.993s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_description', 'cmake_prefix_path')
+[0.993s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/hook/cmake_prefix_path.ps1'
+[0.994s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/hook/cmake_prefix_path.dsv'
+[0.994s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/hook/cmake_prefix_path.sh'
+[0.995s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/bin'
+[0.995s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/lib/pkgconfig/byte_leg_description.pc'
+[0.996s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/lib/python3.12/site-packages'
+[0.997s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/bin'
+[0.997s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.ps1'
+[0.999s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.dsv'
+[1.000s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.sh'
+[1.001s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.bash'
+[1.003s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.zsh'
+[1.004s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/colcon-core/packages/byte_leg_description)
+[1.006s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_description)
+[1.006s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description' for CMake module files
+[1.007s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description' for CMake config files
+[1.008s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_description', 'cmake_prefix_path')
+[1.008s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/hook/cmake_prefix_path.ps1'
+[1.009s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/hook/cmake_prefix_path.dsv'
+[1.009s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/hook/cmake_prefix_path.sh'
+[1.011s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/bin'
+[1.011s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/lib/pkgconfig/byte_leg_description.pc'
+[1.011s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/lib/python3.12/site-packages'
+[1.012s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/bin'
+[1.013s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.ps1'
+[1.019s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.dsv'
+[1.020s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.sh'
+[1.020s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.bash'
+[1.021s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/byte_leg_description/package.zsh'
+[1.021s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description/share/colcon-core/packages/byte_leg_description)
+[1.023s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_gazebo)
+[1.023s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo' for CMake module files
+[1.024s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_gazebo
+[1.025s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo' for CMake config files
+[1.025s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_gazebo', 'cmake_prefix_path')
+[1.025s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/hook/cmake_prefix_path.ps1'
+[1.026s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/hook/cmake_prefix_path.dsv'
+[1.026s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/hook/cmake_prefix_path.sh'
+[1.027s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/bin'
+[1.027s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/lib/pkgconfig/byte_leg_gazebo.pc'
+[1.028s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/lib/python3.12/site-packages'
+[1.028s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/bin'
+[1.029s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.ps1'
+[1.030s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.dsv'
+[1.030s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.sh'
+[1.031s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.bash'
+[1.031s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.zsh'
+[1.032s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/colcon-core/packages/byte_leg_gazebo)
+[1.034s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_gazebo)
+[1.034s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo' for CMake module files
+[1.035s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo' for CMake config files
+[1.036s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_gazebo', 'cmake_prefix_path')
+[1.036s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/hook/cmake_prefix_path.ps1'
+[1.043s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/hook/cmake_prefix_path.dsv'
+[1.044s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/hook/cmake_prefix_path.sh'
+[1.044s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/bin'
+[1.045s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/lib/pkgconfig/byte_leg_gazebo.pc'
+[1.045s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/lib/python3.12/site-packages'
+[1.046s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/bin'
+[1.046s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.ps1'
+[1.047s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.dsv'
+[1.048s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.sh'
+[1.048s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.bash'
+[1.049s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/byte_leg_gazebo/package.zsh'
+[1.049s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo/share/colcon-core/packages/byte_leg_gazebo)
+[1.727s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build
+[1.764s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build
+[2.554s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build
+[2.555s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_control build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/install.log --single-version-externally-managed install_data --force
+[2.581s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build
+[2.583s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_hardware build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/install.log --single-version-externally-managed install_data --force
+[3.858s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control' for CMake module files
+[3.859s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_control build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/install.log --single-version-externally-managed install_data --force
+[3.860s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control' for CMake config files
+[3.861s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib'
+[3.862s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/bin'
+[3.862s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/pkgconfig/byte_leg_control.pc'
+[3.862s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages'
+[3.863s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_control', 'pythonpath')
+[3.863s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/hook/pythonpath.ps1'
+[3.864s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/hook/pythonpath.dsv'
+[3.864s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/hook/pythonpath.sh'
+[3.868s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/bin'
+[3.868s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_control)
+[3.868s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/package.ps1'
+[3.869s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/package.dsv'
+[3.870s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/package.sh'
+[3.870s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/package.bash'
+[3.871s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/package.zsh'
+[3.871s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/colcon-core/packages/byte_leg_control)
+[3.878s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware' for CMake module files
+[3.879s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_hardware build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/install.log --single-version-externally-managed install_data --force
+[3.880s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware' for CMake config files
+[3.880s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib'
+[3.881s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/bin'
+[3.881s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/pkgconfig/byte_leg_hardware.pc'
+[3.881s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages'
+[3.881s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_hardware', 'pythonpath')
+[3.882s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/hook/pythonpath.ps1'
+[3.882s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/hook/pythonpath.dsv'
+[3.883s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/hook/pythonpath.sh'
+[3.884s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/bin'
+[3.884s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_hardware)
+[3.885s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/package.ps1'
+[3.885s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/package.dsv'
+[3.886s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/package.sh'
+[3.887s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/package.bash'
+[3.887s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/package.zsh'
+[3.888s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/colcon-core/packages/byte_leg_hardware)
+[3.888s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_bringup' with build type 'ament_python'
+[3.888s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_bringup', 'ament_prefix_path')
+[3.889s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/hook/ament_prefix_path.ps1'
+[3.890s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/hook/ament_prefix_path.dsv'
+[3.891s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/hook/ament_prefix_path.sh'
+[3.892s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[3.893s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[4.365s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_bringup'
+[4.365s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[4.365s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.397s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_bringup': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_bringup build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/install.log --single-version-externally-managed install_data
+[6.373s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup' for CMake module files
+[6.374s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_bringup' returned '0': AMENT_PREFIX_PATH=/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_gazebo:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_description:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages:/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware:/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_bringup build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_bringup/install.log --single-version-externally-managed install_data
+[6.374s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup' for CMake config files
+[6.375s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib'
+[6.375s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/bin'
+[6.375s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/pkgconfig/byte_leg_bringup.pc'
+[6.376s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/lib/python3.12/site-packages'
+[6.376s] Level 1:colcon.colcon_core.shell:create_environment_hook('byte_leg_bringup', 'pythonpath')
+[6.376s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/hook/pythonpath.ps1'
+[6.377s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/hook/pythonpath.dsv'
+[6.377s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/hook/pythonpath.sh'
+[6.379s] Level 1:colcon.colcon_core.environment:checking '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/bin'
+[6.379s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(byte_leg_bringup)
+[6.379s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/package.ps1'
+[6.380s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/package.dsv'
+[6.381s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/package.sh'
+[6.382s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/package.bash'
+[6.383s] INFO:colcon.colcon_core.shell:Creating package script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/byte_leg_bringup/package.zsh'
+[6.383s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_bringup/share/colcon-core/packages/byte_leg_bringup)
+[6.384s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[6.384s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[6.384s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[6.385s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[6.394s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[6.394s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[6.394s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[6.416s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[6.416s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/local_setup.ps1'
+[6.417s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/loic-finette/Documents/byte_ws/ros2_ws/install/_local_setup_util_ps1.py'
+[6.419s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/setup.ps1'
+[6.422s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/local_setup.sh'
+[6.423s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/loic-finette/Documents/byte_ws/ros2_ws/install/_local_setup_util_sh.py'
+[6.424s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/setup.sh'
+[6.427s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/local_setup.bash'
+[6.427s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/setup.bash'
+[6.429s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/local_setup.zsh'
+[6.430s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/loic-finette/Documents/byte_ws/ros2_ws/install/setup.zsh'

@@ -1,0 +1,45 @@
+[2.231s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build
+[2.845s] running develop
+[3.250s] Removing /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte-leg-control.egg-link (link to .)
+[3.307s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build
+[3.310s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_control build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/install.log --single-version-externally-managed install_data --force
+[3.853s] running egg_info
+[3.892s] writing ../../build/byte_leg_control/byte_leg_control.egg-info/PKG-INFO
+[3.893s] writing dependency_links to ../../build/byte_leg_control/byte_leg_control.egg-info/dependency_links.txt
+[3.893s] writing entry points to ../../build/byte_leg_control/byte_leg_control.egg-info/entry_points.txt
+[3.893s] writing requirements to ../../build/byte_leg_control/byte_leg_control.egg-info/requires.txt
+[3.893s] writing top-level names to ../../build/byte_leg_control/byte_leg_control.egg-info/top_level.txt
+[3.976s] reading manifest file '../../build/byte_leg_control/byte_leg_control.egg-info/SOURCES.txt'
+[3.978s] writing manifest file '../../build/byte_leg_control/byte_leg_control.egg-info/SOURCES.txt'
+[3.978s] running build
+[3.978s] running build_py
+[3.979s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build
+[3.979s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib
+[3.979s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control
+[3.980s] copying byte_leg_control/kinematics.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control
+[3.980s] copying byte_leg_control/ik_node.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control
+[3.980s] copying byte_leg_control/joy_teleop.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control
+[3.980s] copying byte_leg_control/__init__.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control
+[3.981s] running install
+[3.995s] running install_lib
+[4.045s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control
+[4.045s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control/kinematics.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control
+[4.045s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control/ik_node.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control
+[4.045s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control/joy_teleop.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control
+[4.046s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build/lib/byte_leg_control/__init__.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control
+[4.047s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control/kinematics.py to kinematics.cpython-312.pyc
+[4.049s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control/ik_node.py to ik_node.cpython-312.pyc
+[4.050s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control/joy_teleop.py to joy_teleop.cpython-312.pyc
+[4.054s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control/__init__.py to __init__.cpython-312.pyc
+[4.054s] running install_data
+[4.054s] copying resource/byte_leg_control -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/ament_index/resource_index/packages
+[4.055s] copying package.xml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control
+[4.055s] copying config/teleop.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/config
+[4.055s] copying config/controllers.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/share/byte_leg_control/config
+[4.056s] running install_egg_info
+[4.101s] Copying ../../build/byte_leg_control/byte_leg_control.egg-info to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages/byte_leg_control-0.1.0-py3.12.egg-info
+[4.103s] running install_scripts
+[4.380s] Installing ik_node script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control
+[4.381s] Installing joy_teleop script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/byte_leg_control
+[4.381s] writing list of installed files to '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/install.log'
+[4.437s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_control' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_control build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_control/install.log --single-version-externally-managed install_data --force

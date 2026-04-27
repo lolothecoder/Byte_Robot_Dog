@@ -1,0 +1,40 @@
+[2.207s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build
+[2.823s] running develop
+[3.238s] Removing /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte-leg-hardware.egg-link (link to .)
+[3.300s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --uninstall --editable --build-directory /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build
+[3.303s] Invoking command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_hardware build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/install.log --single-version-externally-managed install_data --force
+[3.839s] running egg_info
+[3.880s] writing ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/PKG-INFO
+[3.881s] writing dependency_links to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/dependency_links.txt
+[3.881s] writing entry points to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/entry_points.txt
+[3.882s] writing requirements to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/requires.txt
+[3.882s] writing top-level names to ../../build/byte_leg_hardware/byte_leg_hardware.egg-info/top_level.txt
+[3.965s] reading manifest file '../../build/byte_leg_hardware/byte_leg_hardware.egg-info/SOURCES.txt'
+[3.966s] writing manifest file '../../build/byte_leg_hardware/byte_leg_hardware.egg-info/SOURCES.txt'
+[3.966s] running build
+[3.966s] running build_py
+[3.967s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build
+[3.967s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib
+[3.967s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+[3.968s] copying byte_leg_hardware/can_waveshare.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+[3.968s] copying byte_leg_hardware/can_relay.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+[3.968s] copying byte_leg_hardware/__init__.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware
+[3.968s] running install
+[3.980s] running install_lib
+[4.030s] creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+[4.031s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware/can_waveshare.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+[4.031s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware/can_relay.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+[4.031s] copying /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build/lib/byte_leg_hardware/__init__.py -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware
+[4.032s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware/can_waveshare.py to can_waveshare.cpython-312.pyc
+[4.036s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware/can_relay.py to can_relay.cpython-312.pyc
+[4.044s] byte-compiling /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware/__init__.py to __init__.cpython-312.pyc
+[4.045s] running install_data
+[4.045s] copying resource/byte_leg_hardware -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/ament_index/resource_index/packages
+[4.045s] copying package.xml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware
+[4.046s] copying config/hardware.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/config
+[4.046s] running install_egg_info
+[4.092s] Copying ../../build/byte_leg_hardware/byte_leg_hardware.egg-info to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte_leg_hardware-0.1.0-py3.12.egg-info
+[4.094s] running install_scripts
+[4.394s] Installing can_relay script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/byte_leg_hardware
+[4.395s] writing list of installed files to '/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/install.log'
+[4.456s] Invoked command in '/home/loic-finette/Documents/byte_ws/ros2_ws/src/byte_leg_hardware' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/byte_leg_hardware build --build-base /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/build install --record /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/install.log --single-version-externally-managed install_data --force

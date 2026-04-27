@@ -1,0 +1,7 @@
+Metadata-Version: 2.1
+Name: byte-leg-hardware
+Version: 0.1.0
+Summary: CAN bridge to the real byte_leg ODrive motors.
+Maintainer: Loic Finette
+Maintainer-email: loicfinette@gmail.com
+License: MIT

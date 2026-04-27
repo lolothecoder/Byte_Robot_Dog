@@ -6,7 +6,7 @@ joy_teleop:
     height_speed: 0.15       # right-stick vertical trim rate (m/s)
     decay_time: 0.4          # time to decay step offset to 0 on release (s)
     deadzone: 0.15
-    home_pose: [0.0, 0.0, -0.55]
+    home_pose: [0.0, 0.0, -0.6]      # foot at full extension == URDF-zero, no slew at arm
     height_min: -0.15
     height_max: 0.15
     axis_forward: 1

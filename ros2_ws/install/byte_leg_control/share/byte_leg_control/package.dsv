@@ -4,6 +4,3 @@ source;share/byte_leg_control/hook/pythonpath.sh
 source;share/byte_leg_control/hook/ament_prefix_path.ps1
 source;share/byte_leg_control/hook/ament_prefix_path.dsv
 source;share/byte_leg_control/hook/ament_prefix_path.sh
-source;../../build/byte_leg_control/share/byte_leg_control/hook/pythonpath_develop.ps1
-source;../../build/byte_leg_control/share/byte_leg_control/hook/pythonpath_develop.dsv
-source;../../build/byte_leg_control/share/byte_leg_control/hook/pythonpath_develop.sh

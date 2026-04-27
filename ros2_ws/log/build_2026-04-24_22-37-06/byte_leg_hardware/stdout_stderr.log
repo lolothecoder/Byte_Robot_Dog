@@ -1,0 +1,18 @@
+running develop
+running egg_info
+writing byte_leg_hardware.egg-info/PKG-INFO
+writing dependency_links to byte_leg_hardware.egg-info/dependency_links.txt
+writing entry points to byte_leg_hardware.egg-info/entry_points.txt
+writing requirements to byte_leg_hardware.egg-info/requires.txt
+writing top-level names to byte_leg_hardware.egg-info/top_level.txt
+reading manifest file 'byte_leg_hardware.egg-info/SOURCES.txt'
+writing manifest file 'byte_leg_hardware.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/python3.12/site-packages/byte-leg-hardware.egg-link (link to .)
+Installing can_relay script to /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/lib/byte_leg_hardware
+
+Installed /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware
+running symlink_data
+symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/resource/byte_leg_hardware -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/ament_index/resource_index/packages
+symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/package.xml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware
+symbolically linking /home/loic-finette/Documents/byte_ws/ros2_ws/build/byte_leg_hardware/config/hardware.yaml -> /home/loic-finette/Documents/byte_ws/ros2_ws/install/byte_leg_hardware/share/byte_leg_hardware/config

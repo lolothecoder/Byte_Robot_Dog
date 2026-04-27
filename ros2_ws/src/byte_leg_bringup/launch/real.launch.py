@@ -10,7 +10,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -26,6 +26,7 @@ def generate_launch_description() -> LaunchDescription:
     hardware_yaml = os.path.join(hardware_share, 'config', 'hardware.yaml')
 
     dry_run = LaunchConfiguration('dry_run')
+    read_only = LaunchConfiguration('read_only')
     port = LaunchConfiguration('port')
     rviz = LaunchConfiguration('rviz')
 
@@ -33,6 +34,12 @@ def generate_launch_description() -> LaunchDescription:
         'dry_run', default_value='true',
         description='If true, can_relay reads encoders + logs only; no '
                     'position or state frames are written to the bus.'
+    )
+    declare_read_only = DeclareLaunchArgument(
+        'read_only', default_value='false',
+        description='If true, energize motors (CLOSED_LOOP) on launch and '
+                    'stream /joint_states. Arm service is disabled and no '
+                    'joy/teleop/IK nodes are spawned. IDLE on shutdown.'
     )
     declare_port = DeclareLaunchArgument(
         'port', default_value='/dev/ttyUSB0',
@@ -65,19 +72,24 @@ def generate_launch_description() -> LaunchDescription:
     joy_node = Node(
         package='joy', executable='joy_node', name='joy_node',
         parameters=[teleop_yaml], output='screen',
+        condition=UnlessCondition(read_only),
     )
     teleop_node = Node(
         package='byte_leg_control', executable='joy_teleop',
         name='joy_teleop', parameters=[teleop_yaml], output='screen',
+        condition=UnlessCondition(read_only),
     )
     ik_node = Node(
         package='byte_leg_control', executable='ik_node',
         name='ik_node', parameters=[teleop_yaml], output='screen',
+        condition=UnlessCondition(read_only),
     )
     can_relay = Node(
         package='byte_leg_hardware', executable='can_relay',
         name='can_relay',
-        parameters=[hardware_yaml, {'dry_run': dry_run, 'port': port}],
+        parameters=[hardware_yaml, {
+            'dry_run': dry_run, 'read_only': read_only, 'port': port,
+        }],
         output='screen',
     )
 
@@ -88,7 +100,7 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     return LaunchDescription([
-        declare_dry_run, declare_port, declare_rviz,
+        declare_dry_run, declare_read_only, declare_port, declare_rviz,
         robot_state_publisher,
         joy_node, teleop_node, ik_node,
         can_relay,
