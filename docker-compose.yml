@@ -1,0 +1,20 @@
+services:
+  leg:
+    build: .
+    image: byte-leg:jazzy
+    container_name: byte-leg
+    network_mode: host
+    ipc: host
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    volumes:
+      - ./ros2_ws:/ros2_ws
+      - /dev/bus/usb:/dev/bus/usb
+    device_cgroup_rules:
+      - 'c 189:* rmw'
+    working_dir: /ros2_ws
+    stdin_open: true
+    tty: true
+    environment:
+      - ROS_DOMAIN_ID=0
+    command: bash

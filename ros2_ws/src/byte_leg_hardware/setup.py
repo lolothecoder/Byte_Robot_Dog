@@ -22,6 +22,7 @@ setup(
     entry_points={
         'console_scripts': [
             'can_relay = byte_leg_hardware.can_relay:main',
+            'f710_usb_joy = byte_leg_hardware.f710_usb_joy:main',
         ],
     },
 )
