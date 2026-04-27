@@ -23,6 +23,7 @@ setup(
         'console_scripts': [
             'ik_node = byte_leg_control.ik_node:main',
             'joy_teleop = byte_leg_control.joy_teleop:main',
+            'joy_per_joint = byte_leg_control.joy_per_joint:main',
         ],
     },
 )

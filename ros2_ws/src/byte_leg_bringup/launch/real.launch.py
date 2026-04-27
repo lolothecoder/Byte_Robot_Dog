@@ -11,7 +11,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition, UnlessCondition
-from launch.substitutions import Command, LaunchConfiguration
+from launch.substitutions import Command, LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
@@ -29,6 +29,7 @@ def generate_launch_description() -> LaunchDescription:
     read_only = LaunchConfiguration('read_only')
     port = LaunchConfiguration('port')
     rviz = LaunchConfiguration('rviz')
+    per_joint = LaunchConfiguration('per_joint')
 
     declare_dry_run = DeclareLaunchArgument(
         'dry_run', default_value='true',
@@ -48,6 +49,12 @@ def generate_launch_description() -> LaunchDescription:
     declare_rviz = DeclareLaunchArgument(
         'rviz', default_value='false',
         description='Launch RViz2 with the leg description.'
+    )
+    declare_per_joint = DeclareLaunchArgument(
+        'per_joint', default_value='false',
+        description='If true, swap IK + cartesian teleop for direct '
+                    'per-joint stick teleop (LY=knee, RY=hip_pitch, '
+                    'LX=hip_abduct).'
     )
 
     # robot_description is useful for RViz. Reuse the sim xacro; the
@@ -69,6 +76,13 @@ def generate_launch_description() -> LaunchDescription:
         parameters=[{'robot_description': robot_description}],
     )
 
+    cartesian_active = PythonExpression([
+        "'", read_only, "' == 'false' and '", per_joint, "' == 'false'"
+    ])
+    per_joint_active = PythonExpression([
+        "'", read_only, "' == 'false' and '", per_joint, "' == 'true'"
+    ])
+
     joy_node = Node(
         package='joy', executable='joy_node', name='joy_node',
         parameters=[teleop_yaml], output='screen',
@@ -77,12 +91,17 @@ def generate_launch_description() -> LaunchDescription:
     teleop_node = Node(
         package='byte_leg_control', executable='joy_teleop',
         name='joy_teleop', parameters=[teleop_yaml], output='screen',
-        condition=UnlessCondition(read_only),
+        condition=IfCondition(cartesian_active),
     )
     ik_node = Node(
         package='byte_leg_control', executable='ik_node',
         name='ik_node', parameters=[teleop_yaml], output='screen',
-        condition=UnlessCondition(read_only),
+        condition=IfCondition(cartesian_active),
+    )
+    per_joint_node = Node(
+        package='byte_leg_control', executable='joy_per_joint',
+        name='joy_per_joint', output='screen',
+        condition=IfCondition(per_joint_active),
     )
     can_relay = Node(
         package='byte_leg_hardware', executable='can_relay',
@@ -101,8 +120,9 @@ def generate_launch_description() -> LaunchDescription:
 
     return LaunchDescription([
         declare_dry_run, declare_read_only, declare_port, declare_rviz,
+        declare_per_joint,
         robot_state_publisher,
-        joy_node, teleop_node, ik_node,
+        joy_node, teleop_node, ik_node, per_joint_node,
         can_relay,
         rviz_node,
     ])
