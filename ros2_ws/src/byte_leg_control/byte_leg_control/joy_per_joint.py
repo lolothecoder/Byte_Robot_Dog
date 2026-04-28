@@ -20,7 +20,7 @@ class JoyPerJoint(Node):
     def __init__(self) -> None:
         super().__init__('joy_per_joint')
 
-        self.declare_parameter('speed_rad_s', 1.0)         # rad/s at full stick
+        self.declare_parameter('speed_rad_s', 2.0)         # rad/s at full stick
         self.declare_parameter('max_offset_rad', 1.6)      # cap per joint (bridge clamps each one to its own max_joint_rad anyway)
         self.declare_parameter('decay_time', 0.3)
         self.declare_parameter('deadzone', 0.15)

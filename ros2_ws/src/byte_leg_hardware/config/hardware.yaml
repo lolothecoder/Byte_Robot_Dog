@@ -13,7 +13,7 @@ can_relay:
     # Safety gates
     dry_run: true                         # start safe: no SET_INPUT_POS, no state changes
     max_joint_rad:    [0.2618, 0.5236, 0.7854]  # ±15°, ±30°, ±45° (cable-limited workspace)
-    max_rate_rad_s:   [0.2, 0.2, 0.3]     # very slow — first-arm safety until stick verified
+    max_rate_rad_s:   [0.4, 0.4, 2.0]     # hips conservative; knee fast for bench demos
     command_timeout_s: 1.0               # no trajectory for this long -> auto-disarm
     calibration_file: /tmp/byte_leg_calibration.yaml
 
