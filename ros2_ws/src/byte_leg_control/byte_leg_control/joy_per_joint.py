@@ -24,12 +24,9 @@ class JoyPerJoint(Node):
         self.declare_parameter('max_offset_rad', 1.6)      # cap per joint (bridge clamps each one to its own max_joint_rad anyway)
         self.declare_parameter('decay_time', 0.3)
         self.declare_parameter('deadzone', 0.15)
-        # SWAPPED for diagnostic: hip_pitch on left stick, knee on right stick.
-        # If hip_pitch now responds to the left stick, the issue is with the
-        # right stick / axis 4. If it still doesn't, the issue is the motor.
-        self.declare_parameter('axis_knee', 4)         # RY (was 1)
-        self.declare_parameter('axis_hip_pitch', 1)    # LY (was 4)
-        self.declare_parameter('axis_hip_abduct', 0)   # LX (unchanged)
+        self.declare_parameter('axis_knee', 1)         # LY
+        self.declare_parameter('axis_hip_pitch', 4)    # RY
+        self.declare_parameter('axis_hip_abduct', 0)   # LX
         self.declare_parameter('button_enable', 5)
         self.declare_parameter('button_home', 0)
         self.declare_parameter('publish_rate_hz', 50.0)
