@@ -216,6 +216,17 @@ class F710:
             return 0, 0, 0, 0
         return d[1], d[2], d[3], d[4]  # lx, ly, rx, ry
 
+    def buttons(self):
+        """(x_held, b_held, face_byte). Best-guess F710 DInput mapping; verify with face_byte."""
+        with self._lock:
+            d = self._latest
+        if len(d) < 8:
+            return False, False, 0
+        face = d[5]
+        x_held = bool((face >> 4) & 1)  # X (blue) — guess
+        b_held = bool((face >> 6) & 1)  # B (red)  — guess
+        return x_held, b_held, face
+
     def stop(self):
         self._stop.set()
         try:
@@ -280,10 +291,12 @@ def main():
     pad = F710()
 
     # Per-joint config: (stick_key, sign, gear, node, home_rev, name).
+    # 'btn' is a synthesized axis: B=+1 (forward), X=-1 (backward), neither=0.
+    # Temporary remap to isolate whether knee twitch is from the LY analog signal.
     JOINTS = [
-        ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
-        ('ly', SIGN_KNEE,       GEAR_RATIO, NODE_KNEE,       home['knee'],       'knee'),
-        ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
+        ('lx',  SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
+        ('btn', SIGN_KNEE,       GEAR_RATIO, NODE_KNEE,       home['knee'],       'knee'),
+        ('ry',  SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
@@ -334,7 +347,9 @@ def main():
     PRINT_PERIOD = 0.1  # 10 Hz; stdout cost at this rate is negligible vs the 20 ms tick budget
     while True:
         lx, ly, ry, rb = pad.state()
-        sticks = {'lx': lx, 'ly': ly, 'ry': ry}
+        x_held, b_held, face_byte = pad.buttons()
+        btn_axis = (1.0 if b_held else 0.0) - (1.0 if x_held else 0.0)
+        sticks = {'lx': lx, 'ly': ly, 'ry': ry, 'btn': btn_axis}
 
         for stick_key, sign, gear, node, home_rev, name in JOINTS:
             stick = sticks[stick_key]
@@ -355,9 +370,10 @@ def main():
             rlx, rly, _rrx, rry = pad.raw()
             sys.stdout.write(
                 f"\rRB={'1' if rb else '0'}  "
-                f"LX raw={rlx:3d} val={lx:+.2f}  "
-                f"LY raw={rly:3d} val={ly:+.2f}  "
-                f"RY raw={rry:3d} val={ry:+.2f}    "
+                f"LX={rlx:3d} RY={rry:3d}  "
+                f"face=0x{face_byte:02X} "
+                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'} "
+                f"btn={btn_axis:+.0f}    "
             )
             sys.stdout.flush()
             last_print = now
