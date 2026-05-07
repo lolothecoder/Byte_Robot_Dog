@@ -123,14 +123,16 @@ def read_position(ser, node_id, timeout=3.0, min_readings=5):
     return readings[-1] if readings else None
 
 
-def idle_all(ser, retries=3):
-    """Send IDLE to every node, multiple times, with flushes.
+def idle_all(ser, retries=3, node_delay=0.05):
+    """Send IDLE to every node. For each node: `retries` bursts back-to-back,
+    then sleep `node_delay` seconds before moving to the next node.
 
-    Belt-and-suspenders: the symptom of "Ctrl-C didn't idle node 5" is
-    one frame getting eaten; retrying is cheap and decisive.
+    Use a long node_delay (e.g. 5 s) on shutdown — node 5 sometimes ignores
+    a fast burst when other nodes are also being addressed on the bus, so
+    giving each ODrive its own quiet window makes the IDLE stick.
     """
-    for _ in range(retries):
-        for node in (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE):
+    for node in (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE):
+        for _ in range(retries):
             try:
                 set_axis_state(ser, node, 1)  # AXIS_STATE_IDLE
             except Exception:
@@ -139,7 +141,7 @@ def idle_all(ser, retries=3):
             ser.flush()
         except Exception:
             pass
-        time.sleep(0.05)
+        time.sleep(node_delay)
 
 
 # =============================================================================
@@ -328,7 +330,7 @@ def main():
             time.sleep(0.1)
         except Exception:
             pass
-        idle_all(ser, retries=4)
+        idle_all(ser, retries=3, node_delay=5.0)
         try:
             pad.stop()
         except Exception:
