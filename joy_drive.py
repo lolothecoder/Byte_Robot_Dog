@@ -208,6 +208,14 @@ class F710:
         rb_held = bool((shoulder >> 1) & 1)
         return ax(lx), ax(ly, invert=True), ax(ry, invert=True), rb_held
 
+    def raw(self):
+        """Raw 0-255 byte values for the four stick axes (debug only)."""
+        with self._lock:
+            d = self._latest
+        if len(d) < 8:
+            return 0, 0, 0, 0
+        return d[1], d[2], d[3], d[4]  # lx, ly, rx, ry
+
     def stop(self):
         self._stop.set()
         try:
@@ -322,6 +330,8 @@ def main():
     print()
 
     next_tick = time.monotonic()
+    last_print = 0.0
+    PRINT_PERIOD = 0.1  # 10 Hz; stdout cost at this rate is negligible vs the 20 ms tick budget
     while True:
         lx, ly, ry, rb = pad.state()
         sticks = {'lx': lx, 'ly': ly, 'ry': ry}
@@ -339,6 +349,18 @@ def main():
             set_input_pos(ser, node, home_rev + offset_rev)
 
         ser.flush()
+
+        now = time.monotonic()
+        if now - last_print > PRINT_PERIOD:
+            rlx, rly, _rrx, rry = pad.raw()
+            sys.stdout.write(
+                f"\rRB={'1' if rb else '0'}  "
+                f"LX raw={rlx:3d} val={lx:+.2f}  "
+                f"LY raw={rly:3d} val={ly:+.2f}  "
+                f"RY raw={rry:3d} val={ry:+.2f}    "
+            )
+            sys.stdout.flush()
+            last_print = now
 
         next_tick += dt
         sleep = next_tick - time.monotonic()
