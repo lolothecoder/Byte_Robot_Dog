@@ -298,11 +298,13 @@ def main():
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
-    # Knee jog state.
-    KNEE_STEP_REV = 0.1            # motor revs per button press
-    knee_target_rev = home['knee']
-    prev_b = False
-    prev_x = False
+    # Knee jog state. Hold B/X to move continuously.
+    KNEE_SPEED_REV_S = 0.2          # motor revs per second while button held
+    KNEE_UPDATE_HZ   = 20.0         # how often we send a fresh set_input_pos
+    knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
+    knee_period_s    = 1.0 / KNEE_UPDATE_HZ
+    knee_target_rev  = home['knee']
+    last_knee_send   = 0.0
 
     dt = 1.0 / TICK_HZ
     decay_alpha = min(1.0, dt / max(DECAY_TIME_S, 1e-3))
@@ -367,19 +369,16 @@ def main():
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
-        # Knee: discrete jogs on button rising edges. RB still required.
-        if rb and b_held and not prev_b:
-            knee_target_rev += SIGN_KNEE * KNEE_STEP_REV
-            set_input_pos(ser, NODE_KNEE, knee_target_rev)
-            sys.stdout.write(f"\nknee +{KNEE_STEP_REV:.2f} -> {knee_target_rev:+.3f} rev\n")
-            sys.stdout.flush()
-        if rb and x_held and not prev_x:
-            knee_target_rev -= SIGN_KNEE * KNEE_STEP_REV
-            set_input_pos(ser, NODE_KNEE, knee_target_rev)
-            sys.stdout.write(f"\nknee -{KNEE_STEP_REV:.2f} -> {knee_target_rev:+.3f} rev\n")
-            sys.stdout.flush()
-        prev_b = b_held
-        prev_x = x_held
+        # Knee: hold B (forward) or X (backward) to move at KNEE_SPEED_REV_S.
+        # Sends a fresh set_input_pos every knee_period_s while held — same
+        # discrete-command pattern as tune.py's `g <pos>`, just paced.
+        knee_now = time.monotonic()
+        if rb and (knee_now - last_knee_send) >= knee_period_s:
+            direction = (1 if b_held else 0) - (1 if x_held else 0)
+            if direction != 0:
+                knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                set_input_pos(ser, NODE_KNEE, knee_target_rev)
+                last_knee_send = knee_now
 
         ser.flush()
 
