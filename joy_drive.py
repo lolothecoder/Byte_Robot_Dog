@@ -290,15 +290,19 @@ def main():
     print("Opening F710...")
     pad = F710()
 
-    # Per-joint config: (stick_key, sign, gear, node, home_rev, name).
-    # 'btn' is a synthesized axis: B=+1 (forward), X=-1 (backward), neither=0.
-    # Temporary remap to isolate whether knee twitch is from the LY analog signal.
+    # Hips use the analog accumulator (proven to work).
+    # Knee uses tune.py-style discrete jogs: one button press = one set_input_pos.
     JOINTS = [
-        ('lx',  SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
-        ('btn', SIGN_KNEE,       GEAR_RATIO, NODE_KNEE,       home['knee'],       'knee'),
-        ('ry',  SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
+        ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
+        ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
+
+    # Knee jog state.
+    KNEE_STEP_REV = 0.1            # motor revs per button press
+    knee_target_rev = home['knee']
+    prev_b = False
+    prev_x = False
 
     dt = 1.0 / TICK_HZ
     decay_alpha = min(1.0, dt / max(DECAY_TIME_S, 1e-3))
@@ -348,9 +352,9 @@ def main():
     while True:
         lx, ly, ry, rb = pad.state()
         x_held, b_held, face_byte = pad.buttons()
-        btn_axis = (1.0 if b_held else 0.0) - (1.0 if x_held else 0.0)
-        sticks = {'lx': lx, 'ly': ly, 'ry': ry, 'btn': btn_axis}
+        sticks = {'lx': lx, 'ly': ly, 'ry': ry}
 
+        # Hips: continuous accumulator driven by analog sticks.
         for stick_key, sign, gear, node, home_rev, name in JOINTS:
             stick = sticks[stick_key]
             if rb:
@@ -363,17 +367,30 @@ def main():
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
+        # Knee: discrete jogs on button rising edges. RB still required.
+        if rb and b_held and not prev_b:
+            knee_target_rev += SIGN_KNEE * KNEE_STEP_REV
+            set_input_pos(ser, NODE_KNEE, knee_target_rev)
+            sys.stdout.write(f"\nknee +{KNEE_STEP_REV:.2f} -> {knee_target_rev:+.3f} rev\n")
+            sys.stdout.flush()
+        if rb and x_held and not prev_x:
+            knee_target_rev -= SIGN_KNEE * KNEE_STEP_REV
+            set_input_pos(ser, NODE_KNEE, knee_target_rev)
+            sys.stdout.write(f"\nknee -{KNEE_STEP_REV:.2f} -> {knee_target_rev:+.3f} rev\n")
+            sys.stdout.flush()
+        prev_b = b_held
+        prev_x = x_held
+
         ser.flush()
 
         now = time.monotonic()
         if now - last_print > PRINT_PERIOD:
-            rlx, rly, _rrx, rry = pad.raw()
+            rlx, _rly, _rrx, rry = pad.raw()
             sys.stdout.write(
                 f"\rRB={'1' if rb else '0'}  "
                 f"LX={rlx:3d} RY={rry:3d}  "
-                f"face=0x{face_byte:02X} "
-                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'} "
-                f"btn={btn_axis:+.0f}    "
+                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
+                f"knee_tgt={knee_target_rev:+.3f}    "
             )
             sys.stdout.flush()
             last_print = now
