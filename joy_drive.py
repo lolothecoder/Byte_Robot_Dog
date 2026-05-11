@@ -52,10 +52,17 @@ SIGN_KNEE = 1.0
 
 # ---- Teleop tuning ---------------------------------------------------------
 MAX_RATE_RAD_S = 0.4   # joint rad/s at full stick deflection
-MAX_OFFSET_RAD = 0.5   # cap accumulated offset per joint (workspace clamp)
 DECAY_TIME_S = 0.3     # ~63% return to home per this many seconds when RB is released
 DEADZONE = 0.15
 TICK_HZ = 50.0
+
+# Joint angular limits measured from the startup ("home") pose.
+# (lo_rad, hi_rad); lo may be more negative than hi.
+JOINT_LIMITS_RAD = {
+    'hip_abduct': (-math.radians(20.0), math.radians(20.0)),
+    'hip_pitch':  (-math.radians(40.0), math.radians(5.0)),
+    'knee':       (-math.radians(90.0), math.radians(90.0)),
+}
 
 # ---- F710 USB IDs (DirectInput mode) ---------------------------------------
 VENDOR_ID = 0x046D
@@ -208,7 +215,7 @@ class F710:
             return -x if invert else x
 
         rb_held = bool((shoulder >> 1) & 1)
-        return ax(lx), ax(ly, invert=True), ax(ry, invert=True), rb_held
+        return ax(lx, invert=True), ax(ly, invert=True), ax(ry, invert=True), rb_held
 
     def raw(self):
         """Raw 0-255 byte values for the four stick axes (debug only)."""
@@ -301,12 +308,18 @@ def main():
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
     # Knee jog state. Hold B/X to move continuously.
-    KNEE_SPEED_REV_S = 0.2          # motor revs per second while button held
-    KNEE_UPDATE_HZ   = 20.0         # how often we send a fresh set_input_pos
+    KNEE_SPEED_REV_S = 15.0          # motor revs per second while button held
+    KNEE_UPDATE_HZ   = 30.0         # how often we send a fresh set_input_pos
     knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
     knee_period_s    = 1.0 / KNEE_UPDATE_HZ
     knee_target_rev  = home['knee']
     last_knee_send   = 0.0
+
+    knee_lo_rad, knee_hi_rad = JOINT_LIMITS_RAD['knee']
+    knee_min_rev = home['knee'] + SIGN_KNEE * GEAR_RATIO * knee_lo_rad / TAU
+    knee_max_rev = home['knee'] + SIGN_KNEE * GEAR_RATIO * knee_hi_rad / TAU
+    if knee_min_rev > knee_max_rev:
+        knee_min_rev, knee_max_rev = knee_max_rev, knee_min_rev
 
     dt = 1.0 / TICK_HZ
     decay_alpha = min(1.0, dt / max(DECAY_TIME_S, 1e-3))
@@ -347,7 +360,8 @@ def main():
 
     print()
     print("Hold RB to drive. Release RB to glide back to home. Ctrl-C to quit.")
-    print(f"  speed: {MAX_RATE_RAD_S:.2f} rad/s   workspace: ±{MAX_OFFSET_RAD:.2f} rad")
+    print(f"  speed: {MAX_RATE_RAD_S:.2f} rad/s   "
+          f"limits: abduct ±20°, pitch −40°/+5°, knee ±90°")
     print()
 
     next_tick = time.monotonic()
@@ -361,10 +375,10 @@ def main():
         # Hips: continuous accumulator driven by analog sticks.
         for stick_key, sign, gear, node, home_rev, name in JOINTS:
             stick = sticks[stick_key]
+            lo, hi = JOINT_LIMITS_RAD[name]
             if rb:
                 offset_rad[name] += stick * MAX_RATE_RAD_S * dt
-                offset_rad[name] = max(-MAX_OFFSET_RAD,
-                                       min(MAX_OFFSET_RAD, offset_rad[name]))
+                offset_rad[name] = max(lo, min(hi, offset_rad[name]))
             else:
                 offset_rad[name] *= (1.0 - decay_alpha)
 
@@ -379,6 +393,7 @@ def main():
             direction = (1 if b_held else 0) - (1 if x_held else 0)
             if direction != 0:
                 knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                knee_target_rev = max(knee_min_rev, min(knee_max_rev, knee_target_rev))
                 set_input_pos(ser, NODE_KNEE, knee_target_rev)
                 last_knee_send = knee_now
 
