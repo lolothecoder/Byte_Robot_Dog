@@ -1,30 +1,21 @@
-"""Bench joystick teleop — all-motors-at-body leg, parallel 4-bar knee drive.
+"""Bench joystick teleop — new leg, all motors at body.
 
-Fork of joy_drive.py for the leg revision where the knee motor sits at the
-body and drives the shank through a parallel 4-bar linkage. New CAN node
-IDs: hip_abduct=2, hip_pitch=4, knee=6.
-
-Same control feel as joy_drive.py:
+Fork of joy_drive.py for the leg revision where the knee motor sits at
+the body. Independent per-motor control (no parallel-4-bar mixing).
 
   Hold RB to enable. While held:
-    LX (axis 0)  ->  hip_abduct  joint  (node 2)
-    RY (axis 4)  ->  hip_pitch   joint  (node 4)
-    B / X        ->  knee        joint  (node 6, jog forward/back)
+    LX (axis 0)  ->  hip_abduct  motor (node 2)
+    RY (axis 4)  ->  hip_pitch   motor (node 4)
+    B / X        ->  knee        motor (node 6, jog forward/back)
 
-  Release RB: each joint smoothly decays back to its startup position.
+  Release RB: each motor smoothly decays back to its startup position.
   Ctrl-C: every motor is IDLE'd (with retries).
 
-Parallel 4-bar identity: holding the knee motor still while the hip_pitch
-motor turns swings the shank with the thigh (parallelogram), so the knee
-*joint* angle drifts. To keep the per-joint feel of the old leg, the knee
-motor command mixes in the hip_pitch joint offset:
+Same startup/shutdown sequence as joy_drive.py — IDLE -> CLOSED_LOOP ->
+read fresh encoder -> SET_INPUT_POS to it; shutdown sends IDLE 3× with
+explicit flushes so node 6 doesn't end up stuck hot.
 
-    q_knee_motor = q_hip_pitch_joint + KNEE_PARALLEL_COUPLING * q_knee_joint
-
-With KNEE_PARALLEL_COUPLING = +1.0 (parallelogram). If RY makes the knee
-fold wildly during bring-up, flip the sign to -1.0.
-
-Dependencies: pyserial, pyusb. Same as joy_drive.py.
+Dependencies: pyserial, pyusb.
 """
 import math
 import signal
@@ -50,15 +41,11 @@ SIGN_HIP_ABDUCT = +1.0
 SIGN_HIP_PITCH  = -1.0  # carried over from joy_drive.py; verify on bring-up
 SIGN_KNEE       = +1.0
 
-# Parallelogram identity. Flip to -1.0 if the linkage is anti-parallel.
-KNEE_PARALLEL_COUPLING = +1.0
-
 # ---- Teleop tuning --------------------------------------------------------
-MAX_RATE_RAD_S   = 1.5   # hips: joint rad/s at full stick deflection
-KNEE_RATE_RAD_S  = 3.0   # knee: joint rad/s while B (fwd) or X (back) held
-DECAY_TIME_S     = 0.3   # ~63% return to home in this many seconds when RB released
-DEADZONE         = 0.15
-TICK_HZ          = 50.0
+MAX_RATE_RAD_S = 0.4   # hips: joint rad/s at full stick deflection
+DECAY_TIME_S   = 0.3   # ~63% return to home in this many seconds when RB released
+DEADZONE       = 0.15
+TICK_HZ        = 50.0
 
 JOINT_LIMITS_RAD = {
     'hip_abduct': (-math.radians(20.0), math.radians(20.0)),
@@ -264,7 +251,7 @@ def main():
 
     # 3. Read fresh encoder positions; these become each joint's "home".
     print("Reading current positions...")
-    home_rev = {}
+    home = {}
     for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
                        ('hip_pitch',  NODE_HIP_PITCH),
                        ('knee',       NODE_KNEE)):
@@ -277,7 +264,7 @@ def main():
             idle_all(ser)
             ser.close()
             return 1
-        home_rev[name] = p
+        home[name] = p
         print(f"  {name:11s} (node {node}): {p:+.4f} rev")
 
     # 4. Lock each motor at its freshly-read position. The offset
@@ -286,7 +273,7 @@ def main():
     for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
                        ('hip_pitch',  NODE_HIP_PITCH),
                        ('knee',       NODE_KNEE)):
-        set_input_pos(ser, node, home_rev[name])
+        set_input_pos(ser, node, home[name])
     ser.flush()
     time.sleep(0.2)
 
@@ -295,9 +282,26 @@ def main():
     print("Opening F710...")
     pad = F710()
 
-    # Joint-angle accumulators in radians. Parallel-4-bar coupling is
-    # applied only when computing the knee motor command (see main loop).
-    offset_rad = {'hip_abduct': 0.0, 'hip_pitch': 0.0, 'knee': 0.0}
+    # Hips use the analog accumulator. Knee uses discrete jogs (B/X held).
+    JOINTS = [
+        ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
+        ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
+    ]
+    offset_rad = {j[5]: 0.0 for j in JOINTS}
+
+    # Knee jog state. Hold B/X to move continuously at KNEE_SPEED_REV_S.
+    KNEE_SPEED_REV_S = 15.0
+    KNEE_UPDATE_HZ   = 30.0
+    knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
+    knee_period_s    = 1.0 / KNEE_UPDATE_HZ
+    knee_target_rev  = home['knee']
+    last_knee_send   = 0.0
+
+    knee_lo_rad, knee_hi_rad = JOINT_LIMITS_RAD['knee']
+    knee_min_rev = home['knee'] + SIGN_KNEE * GEAR_RATIO * knee_lo_rad / TAU
+    knee_max_rev = home['knee'] + SIGN_KNEE * GEAR_RATIO * knee_hi_rad / TAU
+    if knee_min_rev > knee_max_rev:
+        knee_min_rev, knee_max_rev = knee_max_rev, knee_min_rev
 
     dt = 1.0 / TICK_HZ
     decay_alpha = min(1.0, dt / max(DECAY_TIME_S, 1e-3))
@@ -314,7 +318,7 @@ def main():
             for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
                                ('hip_pitch',  NODE_HIP_PITCH),
                                ('knee',       NODE_KNEE)):
-                set_input_pos(ser, node, home_rev[name])
+                set_input_pos(ser, node, home[name])
             ser.flush()
             time.sleep(0.1)
         except Exception:
@@ -336,9 +340,8 @@ def main():
 
     print()
     print("Hold RB to drive. Release RB to glide back to home. Ctrl-C to quit.")
-    print(f"  hips:  {MAX_RATE_RAD_S:.2f} rad/s   knee: {KNEE_RATE_RAD_S:.2f} rad/s")
-    print(f"  limits: NONE (rate-limited only)")
-    print(f"  parallel-4-bar coupling: {KNEE_PARALLEL_COUPLING:+.1f}")
+    print(f"  hips: {MAX_RATE_RAD_S:.2f} rad/s   knee: {KNEE_SPEED_REV_S:.1f} motor rev/s")
+    print(f"  limits: abduct ±20°, pitch −40°/+5°, knee ±90°")
     print()
 
     next_tick = time.monotonic()
@@ -347,31 +350,31 @@ def main():
     while True:
         lx, _ly, ry, rb = pad.state()
         x_held, b_held, _face = pad.buttons()
+        sticks = {'lx': lx, 'ry': ry}
 
-        if rb:
-            offset_rad['hip_abduct'] += lx * MAX_RATE_RAD_S * dt
-            offset_rad['hip_pitch']  += ry * MAX_RATE_RAD_S * dt
-            knee_dir = (1 if b_held else 0) - (1 if x_held else 0)
-            offset_rad['knee']       += knee_dir * KNEE_RATE_RAD_S * dt
-        else:
-            for name in offset_rad:
+        # Hips: continuous accumulator driven by analog sticks.
+        for stick_key, sign, gear, node, home_rev, name in JOINTS:
+            stick = sticks[stick_key]
+            lo, hi = JOINT_LIMITS_RAD[name]
+            if rb:
+                offset_rad[name] += stick * MAX_RATE_RAD_S * dt
+                offset_rad[name] = max(lo, min(hi, offset_rad[name]))
+            else:
                 offset_rad[name] *= (1.0 - decay_alpha)
 
-        # Joint → motor with parallel-4-bar coupling on the knee.
-        haa_rev = (home_rev['hip_abduct']
-                   + SIGN_HIP_ABDUCT * GEAR_RATIO * offset_rad['hip_abduct'] / TAU)
-        hp_rev  = (home_rev['hip_pitch']
-                   + SIGN_HIP_PITCH  * GEAR_RATIO * offset_rad['hip_pitch']  / TAU)
-        # The knee motor must rotate with hip_pitch to hold the knee joint
-        # angle constant — parallelogram identity.
-        knee_motor_joint = (offset_rad['knee']
-                            + KNEE_PARALLEL_COUPLING * offset_rad['hip_pitch'])
-        k_rev = (home_rev['knee']
-                 + SIGN_KNEE * GEAR_RATIO * knee_motor_joint / TAU)
+            offset_rev = sign * gear * offset_rad[name] / TAU
+            set_input_pos(ser, node, home_rev + offset_rev)
 
-        set_input_pos(ser, NODE_HIP_ABDUCT, haa_rev)
-        set_input_pos(ser, NODE_HIP_PITCH,  hp_rev)
-        set_input_pos(ser, NODE_KNEE,       k_rev)
+        # Knee: hold B (forward) or X (backward) to move at KNEE_SPEED_REV_S.
+        knee_now = time.monotonic()
+        if rb and (knee_now - last_knee_send) >= knee_period_s:
+            direction = (1 if b_held else 0) - (1 if x_held else 0)
+            if direction != 0:
+                knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                knee_target_rev = max(knee_min_rev, min(knee_max_rev, knee_target_rev))
+                set_input_pos(ser, NODE_KNEE, knee_target_rev)
+                last_knee_send = knee_now
+
         ser.flush()
 
         now = time.monotonic()
@@ -381,9 +384,7 @@ def main():
                 f"\rRB={'1' if rb else '0'}  "
                 f"LX={rlx:3d} RY={rry:3d}  "
                 f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
-                f"haa={offset_rad['hip_abduct']:+.3f} "
-                f"hp={offset_rad['hip_pitch']:+.3f} "
-                f"kn={offset_rad['knee']:+.3f} rad    "
+                f"knee_tgt={knee_target_rev:+.3f}    "
             )
             sys.stdout.flush()
             last_print = now
