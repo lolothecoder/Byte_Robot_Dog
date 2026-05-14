@@ -49,6 +49,12 @@ DECAY_TIME_S          = 0.3   # ~63% return to home when RB released
 DEADZONE              = 0.15
 TICK_HZ               = 50.0
 
+# Gains pushed to every ODrive at startup. Override NVM to keep the script's
+# discrete-jog torque pulses gentle. (vel_integrator_gain left at 0.)
+POS_GAIN = 40.0
+VEL_GAIN = 0.2
+VEL_INTEGRATOR_GAIN = 0.0
+
 # No joint limits at the moment — rate limiter is the only safety net.
 
 # ---- F710 USB IDs (DirectInput mode, slider on "D") -----------------------
@@ -82,6 +88,14 @@ def set_axis_state(ser, node_id, state):
 
 def set_input_pos(ser, node_id, pos_rev):
     send_can(ser, node_id, 0x0C, struct.pack('<fhh', pos_rev, 0, 0))
+
+
+def set_pos_gain(ser, node_id, pos_gain):
+    send_can(ser, node_id, 0x1A, struct.pack('<f', pos_gain))
+
+
+def set_vel_gains(ser, node_id, vel_gain, vel_integrator_gain):
+    send_can(ser, node_id, 0x1B, struct.pack('<ff', vel_gain, vel_integrator_gain))
 
 
 def read_position(ser, node_id, timeout=3.0, min_readings=5):
@@ -246,6 +260,14 @@ def main():
         time.sleep(0.3)
     time.sleep(0.5)
     ser.reset_input_buffer()
+
+    # 2b. Push uniform gains so the discrete-jog torque pulses stay gentle.
+    print(f"Pushing gains (pos={POS_GAIN}, vel={VEL_GAIN}, vel_int={VEL_INTEGRATOR_GAIN})...")
+    for node in (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE):
+        set_pos_gain(ser, node, POS_GAIN)
+        set_vel_gains(ser, node, VEL_GAIN, VEL_INTEGRATOR_GAIN)
+    ser.flush()
+    time.sleep(0.1)
 
     # 3. Read fresh encoder positions; these become each joint's "home".
     print("Reading current positions...")
