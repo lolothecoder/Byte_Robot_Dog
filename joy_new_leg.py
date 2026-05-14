@@ -177,26 +177,30 @@ def main():
     ser = serial.Serial(PORT, BAUD, timeout=0.01)
     init_waveshare(ser)
 
-    # IDLE → CLOSED_LOOP → read encoder → lock. Same as tune.py.
+    # Bring up the motors one at a time to shrink the "stale input_pos
+    # yank-window" — between CLOSED_LOOP engaging and our first
+    # set_input_pos landing, ODrive briefly targets whatever input_pos
+    # was last in RAM (possibly zero / far from the current encoder
+    # position). Energizing all three at once means three potential
+    # yanks at the same time. Doing it sequentially leaves the other
+    # two motors IDLE (no force) while one is in its yank-window.
     ALL_NODES = (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE)
-    print("Setting nodes to IDLE...")
+    NAMED = (('hip_abduct', NODE_HIP_ABDUCT),
+             ('hip_pitch',  NODE_HIP_PITCH),
+             ('knee',       NODE_KNEE))
+
+    print("Setting all nodes to IDLE...")
     for node in ALL_NODES:
         set_axis_state(ser, node, 1)
     time.sleep(0.3)
     ser.reset_input_buffer()
 
-    print("Energizing (CLOSED_LOOP)...")
-    for node in ALL_NODES:
-        set_axis_state(ser, node, 8)
-        time.sleep(0.3)
-    time.sleep(0.5)
-    ser.reset_input_buffer()
-
-    print("Reading current positions...")
+    print("Energizing & locking each motor in sequence...")
     home = {}
-    for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
-                       ('hip_pitch',  NODE_HIP_PITCH),
-                       ('knee',       NODE_KNEE)):
+    for name, node in NAMED:
+        set_axis_state(ser, node, 8)  # CLOSED_LOOP_CONTROL
+        time.sleep(0.3)               # let the axis state transition + encoder warm up
+        ser.reset_input_buffer()
         p = read_position(ser, node, timeout=3.0)
         if p is None:
             print(f"ERROR: no encoder data for {name} (node {node}). "
@@ -205,17 +209,16 @@ def main():
                 set_axis_state(ser, n, 1)
             ser.close()
             return 1
+        # Lock the motor at its current position BEFORE moving to the
+        # next node. From here on, no yank for this motor.
+        set_input_pos(ser, node, p)
+        ser.flush()
         home[name] = p
-        print(f"  {name:11s} (node {node}): {p:+.4f} rev")
+        print(f"  {name:11s} (node {node}): {p:+.4f} rev — locked")
 
     hip_abduct_target_rev = home['hip_abduct']
     hip_pitch_target_rev  = home['hip_pitch']
     knee_target_rev       = home['knee']
-    for node, val in ((NODE_HIP_ABDUCT, hip_abduct_target_rev),
-                      (NODE_HIP_PITCH,  hip_pitch_target_rev),
-                      (NODE_KNEE,       knee_target_rev)):
-        set_input_pos(ser, node, val)
-    ser.flush()
     time.sleep(0.2)
 
     print("Opening F710...")
