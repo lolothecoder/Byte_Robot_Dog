@@ -338,12 +338,38 @@ def main():
     print(f"  limits: NONE (rate-limited only)")
     print()
 
+    # Debug: drain incoming encoder broadcasts so we can show the actual
+    # measured knee position alongside the commanded target.
+    rx_buf = bytearray()
+    knee_measured_rev = home['knee']
+    expected_knee_enc = (NODE_KNEE << 5) | 0x09
+
     next_tick = time.monotonic()
     last_print = 0.0
     PRINT_PERIOD = 0.1
     while True:
+        # Pull any encoder broadcasts that arrived since last tick.
+        if ser.in_waiting:
+            rx_buf.extend(ser.read(ser.in_waiting))
+        while len(rx_buf) >= 5:
+            if rx_buf[0] != 0xAA:
+                rx_buf.pop(0)
+                continue
+            n = rx_buf[1] & 0x0F
+            pkt_len = 5 + n
+            if len(rx_buf) < pkt_len:
+                break
+            if rx_buf[pkt_len - 1] != 0x55:
+                rx_buf.pop(0)
+                continue
+            aid = rx_buf[2] | (rx_buf[3] << 8)
+            if aid == expected_knee_enc and n == 8:
+                pos, _vel = struct.unpack('<ff', rx_buf[4:12])
+                knee_measured_rev = pos
+            del rx_buf[:pkt_len]
+
         lx, _ly, ry, rb = pad.state()
-        x_held, b_held, _face = pad.buttons()
+        x_held, b_held, face = pad.buttons()
         sticks = {'lx': lx, 'ry': ry}
 
         # Hips: continuous accumulator driven by analog sticks.
@@ -374,8 +400,10 @@ def main():
             sys.stdout.write(
                 f"\rRB={'1' if rb else '0'}  "
                 f"LX={rlx:3d} RY={rry:3d}  "
-                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
-                f"knee_tgt={knee_target_rev:+.3f}    "
+                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'} "
+                f"face=0x{face:02X}  "
+                f"knee_tgt={knee_target_rev:+.3f} "
+                f"knee_pos={knee_measured_rev:+.3f}    "
             )
             sys.stdout.flush()
             last_print = now
