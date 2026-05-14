@@ -6,7 +6,7 @@ import threading
 
 # --- Configuration ---
 PORT = "/dev/ttyUSB0"
-NODE = 3
+NODE = 6
 TORQUE_CONSTANT = 0.055  # UPDATE for your motor: KT ≈ 8.27 / KV
 
 # CAN Command IDs
