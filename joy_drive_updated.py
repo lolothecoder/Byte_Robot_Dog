@@ -44,7 +44,7 @@ SIGN_KNEE       = +1.0
 # ---- Teleop tuning --------------------------------------------------------
 HIP_ABDUCT_RATE_RAD_S = 2.5   # LX: joint rad/s at full stick deflection
 HIP_PITCH_RATE_RAD_S  = 0.3   # RY: joint rad/s at full stick deflection
-KNEE_RATE_RAD_S       = 0.5   # B/X: joint rad/s while held
+KNEE_SPEED_REV_S      = 3.0   # B/X: motor rev/s while held (joy_drive.py style)
 DECAY_TIME_S          = 0.3   # ~63% return to home when RB released
 DEADZONE              = 0.15
 TICK_HZ               = 50.0
@@ -80,10 +80,8 @@ def set_axis_state(ser, node_id, state):
     send_can(ser, node_id, 0x07, struct.pack('<I', state))
 
 
-def set_input_pos(ser, node_id, pos_rev, vel_ff_rev_s=0.0):
-    """vel_ff_rev_s is in motor rev/s; ODrive expects it in 0.001 turns/s."""
-    vel_ff_int = max(-32768, min(32767, int(vel_ff_rev_s * 1000)))
-    send_can(ser, node_id, 0x0C, struct.pack('<fhh', pos_rev, vel_ff_int, 0))
+def set_input_pos(ser, node_id, pos_rev):
+    send_can(ser, node_id, 0x0C, struct.pack('<fhh', pos_rev, 0, 0))
 
 
 def read_position(ser, node_id, timeout=3.0, min_readings=5):
@@ -290,14 +288,13 @@ def main():
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
-    # Knee jog state. Hold B/X to move at KNEE_RATE_RAD_S joint rad/s.
+    # Knee jog state — joy_drive.py style: discrete jogs at KNEE_SPEED_REV_S
+    # motor rev/s while B (fwd) or X (back) is held.
     KNEE_UPDATE_HZ   = 30.0
-    knee_step_rev    = SIGN_KNEE * GEAR_RATIO * KNEE_RATE_RAD_S / (KNEE_UPDATE_HZ * TAU)
-    knee_vel_rev_s   = SIGN_KNEE * GEAR_RATIO * KNEE_RATE_RAD_S / TAU  # vel_ff while jogging
+    knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
     knee_period_s    = 1.0 / KNEE_UPDATE_HZ
     knee_target_rev  = home['knee']
     last_knee_send   = 0.0
-    last_knee_direction = 0  # used to send a single vel_ff=0 settle command on release
 
     dt = 1.0 / TICK_HZ
     decay_alpha = min(1.0, dt / max(DECAY_TIME_S, 1e-3))
@@ -338,7 +335,7 @@ def main():
     print("Hold RB to drive. Release RB to glide back to home. Ctrl-C to quit.")
     print(f"  hip_abduct: {HIP_ABDUCT_RATE_RAD_S:.2f} rad/s   "
           f"hip_pitch: {HIP_PITCH_RATE_RAD_S:.2f} rad/s   "
-          f"knee: {KNEE_RATE_RAD_S:.2f} rad/s")
+          f"knee: {KNEE_SPEED_REV_S:.2f} motor rev/s")
     print(f"  limits: NONE (rate-limited only)")
     print()
 
@@ -387,21 +384,15 @@ def main():
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
-        # Knee: hold B (forward) or X (backward) to move at KNEE_RATE_RAD_S.
-        # vel_ff is what eliminates the friction-deadband jerkiness: the
-        # velocity loop pushes a continuous torque to maintain the commanded
-        # velocity instead of waiting for position error to overcome static
-        # friction. When the button is released we send one settle command
-        # with vel_ff=0 so the motor stops pushing.
+        # Knee: hold B (forward) or X (backward) to move at KNEE_SPEED_REV_S.
+        # joy_drive.py-identical discrete-jog pattern.
         knee_now = time.monotonic()
-        direction = (1 if b_held else 0) - (1 if x_held else 0) if rb else 0
-        if direction != 0 and (knee_now - last_knee_send) >= knee_period_s:
-            knee_target_rev += direction * knee_step_rev
-            set_input_pos(ser, NODE_KNEE, knee_target_rev, direction * knee_vel_rev_s)
-            last_knee_send = knee_now
-        elif direction == 0 and last_knee_direction != 0:
-            set_input_pos(ser, NODE_KNEE, knee_target_rev, 0.0)
-        last_knee_direction = direction
+        if rb and (knee_now - last_knee_send) >= knee_period_s:
+            direction = (1 if b_held else 0) - (1 if x_held else 0)
+            if direction != 0:
+                knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                set_input_pos(ser, NODE_KNEE, knee_target_rev)
+                last_knee_send = knee_now
 
         ser.flush()
 
