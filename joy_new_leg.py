@@ -1,15 +1,16 @@
-"""Knee + hip_pitch test: analog accumulator via F710.
+"""Bench joystick teleop for the new leg (3 motors, all at body).
 
-Controls node 6 (knee) and node 4 (hip_pitch). Same analog-accumulator
-pattern for both — every tick, the commanded position grows toward where
-the user is pushing, motor tracks smoothly via ODrive's position loop.
+Same analog-accumulator pattern for every joint — every tick the commanded
+position shifts by `stick × speed × dt` and `set_input_pos` goes out.
+ODrive's position loop handles the smooth traversal.
 
   Hold RB (deadman). While held:
-    B / X  ->  knee     (node 6)   up/down
-    RY     ->  hip_pitch (node 4)  forward/back
+    LX     ->  hip_abduct (node 2)  left/right
+    RY     ->  hip_pitch  (node 4)  forward/back
+    B / X  ->  knee       (node 6)  up/down
 
 Releasing a control leaves that joint's target where it is. Ctrl-C idles
-and exits.
+all motors and exits.
 """
 import signal
 import struct
@@ -24,15 +25,18 @@ import usb.util
 # ---- Hardware ------------------------------------------------------------
 PORT = "/dev/ttyUSB0"
 BAUD = 2_000_000
-NODE_KNEE      = 6
-NODE_HIP_PITCH = 4
-SIGN_HIP_PITCH = -1.0  # flips if RY-forward drives the wrong direction
+NODE_HIP_ABDUCT = 2
+NODE_HIP_PITCH  = 4
+NODE_KNEE       = 6
+SIGN_HIP_ABDUCT = +1.0  # flips if LX-right drives the wrong direction
+SIGN_HIP_PITCH  = -1.0  # flips if RY-forward drives the wrong direction
 
 # ---- Speed config --------------------------------------------------------
-KNEE_SPEED_REV_S      = 2.0   # motor rev/s while B (up) or X (down) is held
-HIP_PITCH_SPEED_REV_S = 0.4   # motor rev/s at full RY deflection
-DEADZONE              = 0.15
-TICK_HZ               = 50.0  # update rate of the main loop
+HIP_ABDUCT_SPEED_REV_S = 3.2   # motor rev/s at full LX deflection (~2.5 joint rad/s)
+HIP_PITCH_SPEED_REV_S  = 0.4   # motor rev/s at full RY deflection
+KNEE_SPEED_REV_S       = 2.0   # motor rev/s while B (up) or X (down) is held
+DEADZONE               = 0.15
+TICK_HZ                = 50.0  # update rate of the main loop
 
 # ---- F710 USB IDs (DirectInput mode, slider on "D") ----------------------
 VENDOR_ID = 0x046D
@@ -140,20 +144,22 @@ class F710:
                     pass
 
     def state(self):
-        """(rb_held, x_held, b_held, ry, face_byte). ry is in [-1, 1] with
-        deadzone applied; stick-forward is positive."""
+        """(rb_held, x_held, b_held, lx, ry, face_byte). lx and ry are in
+        [-1, 1] with deadzone applied. lx-right and ry-forward are positive."""
         with self._lock:
             d = self._latest
         if len(d) < 8:
-            return False, False, False, 0.0, 0
+            return False, False, False, 0.0, 0.0, 0
         face = d[5]
         shoulder = d[6]
         rb_held = bool((shoulder >> 1) & 1)
         x_held = bool((face >> 4) & 1)
         b_held = bool((face >> 6) & 1)
+        lx_raw = (d[1] - 128) / 127.0
         ry_raw = (d[4] - 128) / 127.0
+        lx = -lx_raw if abs(lx_raw) >= DEADZONE else 0.0  # invert: right = +
         ry = -ry_raw if abs(ry_raw) >= DEADZONE else 0.0  # invert: forward = +
-        return rb_held, x_held, b_held, ry, face
+        return rb_held, x_held, b_held, lx, ry, face
 
     def stop(self):
         self._stop.set()
@@ -172,14 +178,15 @@ def main():
     init_waveshare(ser)
 
     # IDLE → CLOSED_LOOP → read encoder → lock. Same as tune.py.
+    ALL_NODES = (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE)
     print("Setting nodes to IDLE...")
-    for node in (NODE_KNEE, NODE_HIP_PITCH):
+    for node in ALL_NODES:
         set_axis_state(ser, node, 1)
     time.sleep(0.3)
     ser.reset_input_buffer()
 
     print("Energizing (CLOSED_LOOP)...")
-    for node in (NODE_KNEE, NODE_HIP_PITCH):
+    for node in ALL_NODES:
         set_axis_state(ser, node, 8)
         time.sleep(0.3)
     time.sleep(0.5)
@@ -187,22 +194,26 @@ def main():
 
     print("Reading current positions...")
     home = {}
-    for name, node in (('knee', NODE_KNEE), ('hip_pitch', NODE_HIP_PITCH)):
+    for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
+                       ('hip_pitch',  NODE_HIP_PITCH),
+                       ('knee',       NODE_KNEE)):
         p = read_position(ser, node, timeout=3.0)
         if p is None:
             print(f"ERROR: no encoder data for {name} (node {node}). "
                   "Aborting (motors -> IDLE).")
-            for n in (NODE_KNEE, NODE_HIP_PITCH):
+            for n in ALL_NODES:
                 set_axis_state(ser, n, 1)
             ser.close()
             return 1
         home[name] = p
-        print(f"  {name:10s} (node {node}): {p:+.4f} rev")
+        print(f"  {name:11s} (node {node}): {p:+.4f} rev")
 
-    knee_target_rev = home['knee']
-    hip_pitch_target_rev = home['hip_pitch']
-    for node, val in ((NODE_KNEE, knee_target_rev),
-                      (NODE_HIP_PITCH, hip_pitch_target_rev)):
+    hip_abduct_target_rev = home['hip_abduct']
+    hip_pitch_target_rev  = home['hip_pitch']
+    knee_target_rev       = home['knee']
+    for node, val in ((NODE_HIP_ABDUCT, hip_abduct_target_rev),
+                      (NODE_HIP_PITCH,  hip_pitch_target_rev),
+                      (NODE_KNEE,       knee_target_rev)):
         set_input_pos(ser, node, val)
     ser.flush()
     time.sleep(0.2)
@@ -218,13 +229,15 @@ def main():
         shutting_down.set()
         print("\nShutting down: idling motors...")
         try:
-            set_input_pos(ser, NODE_KNEE, home['knee'])
-            set_input_pos(ser, NODE_HIP_PITCH, home['hip_pitch'])
+            for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
+                               ('hip_pitch',  NODE_HIP_PITCH),
+                               ('knee',       NODE_KNEE)):
+                set_input_pos(ser, node, home[name])
             ser.flush()
             time.sleep(0.1)
         except Exception:
             pass
-        for node in (NODE_KNEE, NODE_HIP_PITCH):
+        for node in ALL_NODES:
             for _ in range(3):
                 try:
                     set_axis_state(ser, node, 1)
@@ -250,38 +263,43 @@ def main():
     signal.signal(signal.SIGTERM, shutdown)
 
     print()
-    print(f"Hold RB + B / X     -> knee up/down at {KNEE_SPEED_REV_S} motor rev/s")
-    print(f"Hold RB + RY        -> hip_pitch fwd/back at {HIP_PITCH_SPEED_REV_S} motor rev/s")
+    print(f"Hold RB + LX      -> hip_abduct left/right at {HIP_ABDUCT_SPEED_REV_S} motor rev/s")
+    print(f"Hold RB + RY      -> hip_pitch  fwd/back   at {HIP_PITCH_SPEED_REV_S} motor rev/s")
+    print(f"Hold RB + B / X   -> knee       up/down    at {KNEE_SPEED_REV_S} motor rev/s")
     print("Release: targets hold. Ctrl-C to quit.")
     print()
 
     dt = 1.0 / TICK_HZ
-    knee_step      = KNEE_SPEED_REV_S * dt        # motor rev per tick at full speed
-    hip_pitch_step = HIP_PITCH_SPEED_REV_S * dt   # motor rev per tick at full deflection
+    hip_abduct_step = HIP_ABDUCT_SPEED_REV_S * dt
+    hip_pitch_step  = HIP_PITCH_SPEED_REV_S  * dt
+    knee_step       = KNEE_SPEED_REV_S       * dt
     next_tick = time.monotonic()
     last_print = 0.0
     PRINT_PERIOD = 0.1
     while True:
-        rb, x_held, b_held, ry, face = pad.state()
+        rb, x_held, b_held, lx, ry, face = pad.state()
 
-        # Analog-accumulator pattern for both joints.
+        # Analog-accumulator pattern for every joint.
         if rb:
+            hip_abduct_target_rev += SIGN_HIP_ABDUCT * lx * hip_abduct_step
+            hip_pitch_target_rev  += SIGN_HIP_PITCH  * ry * hip_pitch_step
             knee_dir = (1 if b_held else 0) - (1 if x_held else 0)
             knee_target_rev += knee_dir * knee_step
-            hip_pitch_target_rev += SIGN_HIP_PITCH * ry * hip_pitch_step
 
-        set_input_pos(ser, NODE_KNEE, knee_target_rev)
-        set_input_pos(ser, NODE_HIP_PITCH, hip_pitch_target_rev)
+        set_input_pos(ser, NODE_HIP_ABDUCT, hip_abduct_target_rev)
+        set_input_pos(ser, NODE_HIP_PITCH,  hip_pitch_target_rev)
+        set_input_pos(ser, NODE_KNEE,       knee_target_rev)
         ser.flush()
 
         now = time.monotonic()
         if now - last_print > PRINT_PERIOD:
             sys.stdout.write(
                 f"\rRB={'1' if rb else '0'}  "
-                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'} "
-                f"RY={ry:+.2f}  "
-                f"knee={knee_target_rev:+.4f} "
-                f"pitch={hip_pitch_target_rev:+.4f}    "
+                f"LX={lx:+.2f} RY={ry:+.2f} "
+                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
+                f"abd={hip_abduct_target_rev:+.3f} "
+                f"pit={hip_pitch_target_rev:+.3f} "
+                f"knee={knee_target_rev:+.3f}    "
             )
             sys.stdout.flush()
             last_print = now
