@@ -1,15 +1,15 @@
-"""Minimal knee-only test: tune.py-style discrete steps via the F710.
+"""Minimal knee-only test: analog accumulator via F710 buttons.
 
-Controls node 6 (knee) ONLY. No hips, no continuous accumulator, no 30 Hz
-update loop. Each rising edge of B (up) or X (down) sends exactly ONE
-set_input_pos(NODE_KNEE, current_target + STEP_SIZE), exactly the way
-`tune.py s 0.1` does it. ODrive's internal position loop then handles
-the smooth traversal — no script-side stream of incremental commands.
+Controls node 6 (knee) ONLY. Hold RB + B to ramp the commanded position
+up at KNEE_SPEED_REV_S motor rev/s; hold RB + X to ramp down. Releasing
+either button leaves the target where it is (motor holds position).
 
-Goal: verify node 6 moves cleanly with this pattern before re-introducing
-the hips.
+The per-tick step size at 50 Hz with KNEE_SPEED_REV_S = 2.0 is 0.04 motor
+rev — same regime the hips run in (above the friction deadband, below
+current saturation), which was the only regime that felt smooth on the
+knee.
 
-Hold RB (deadman) for any button to register. Ctrl-C idles and exits.
+Ctrl-C idles and exits.
 """
 import signal
 import struct
@@ -26,8 +26,9 @@ PORT = "/dev/ttyUSB0"
 BAUD = 2_000_000
 NODE_KNEE = 6
 
-# ---- Step config ---------------------------------------------------------
-STEP_REV  = 0.1   # motor rev per button press — same as `tune.py s 0.1`
+# ---- Speed config --------------------------------------------------------
+KNEE_SPEED_REV_S = 2.0   # motor rev/s while B (up) or X (down) is held
+TICK_HZ          = 50.0  # update rate of the main loop
 
 # ---- F710 USB IDs (DirectInput mode, slider on "D") ----------------------
 VENDOR_ID = 0x046D
@@ -230,32 +231,24 @@ def main():
     signal.signal(signal.SIGTERM, shutdown)
 
     print()
-    print(f"Hold RB + press B  -> step +{STEP_REV} rev (up)")
-    print(f"Hold RB + press X  -> step -{STEP_REV} rev (down)")
-    print("Ctrl-C to quit.")
+    print(f"Hold RB + B  -> ramp up at {KNEE_SPEED_REV_S} motor rev/s")
+    print(f"Hold RB + X  -> ramp down at {KNEE_SPEED_REV_S} motor rev/s")
+    print("Release: target holds. Ctrl-C to quit.")
     print()
 
-    prev_b = False
-    prev_x = False
+    dt = 1.0 / TICK_HZ
+    step_per_tick = KNEE_SPEED_REV_S * dt   # motor rev per tick at full speed
+    next_tick = time.monotonic()
     last_print = 0.0
     PRINT_PERIOD = 0.1
     while True:
         rb, x_held, b_held, face = pad.state()
 
-        # Rising-edge detection. STEP only fires once per press.
-        if rb and b_held and not prev_b:
-            target_rev += STEP_REV
-            set_input_pos(ser, NODE_KNEE, target_rev)
-            ser.flush()
-            print(f"\n  step +{STEP_REV} -> target = {target_rev:+.4f} rev")
-        if rb and x_held and not prev_x:
-            target_rev -= STEP_REV
-            set_input_pos(ser, NODE_KNEE, target_rev)
-            ser.flush()
-            print(f"\n  step -{STEP_REV} -> target = {target_rev:+.4f} rev")
-
-        prev_b = b_held and rb
-        prev_x = x_held and rb
+        # Analog-accumulator pattern (mirrors the hips in joy_drive_updated.py).
+        direction = (1 if b_held else 0) - (1 if x_held else 0) if rb else 0
+        target_rev += direction * step_per_tick
+        set_input_pos(ser, NODE_KNEE, target_rev)
+        ser.flush()
 
         now = time.monotonic()
         if now - last_print > PRINT_PERIOD:
@@ -268,7 +261,12 @@ def main():
             sys.stdout.flush()
             last_print = now
 
-        time.sleep(0.02)  # 50 Hz button-edge polling
+        next_tick += dt
+        sleep = next_tick - time.monotonic()
+        if sleep > 0:
+            time.sleep(sleep)
+        else:
+            next_tick = time.monotonic()
 
 
 if __name__ == '__main__':
