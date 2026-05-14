@@ -337,7 +337,7 @@ def main():
     print()
     print("Hold RB to drive. Release RB to glide back to home. Ctrl-C to quit.")
     print(f"  hips:  {MAX_RATE_RAD_S:.2f} rad/s   knee: {KNEE_RATE_RAD_S:.2f} rad/s")
-    print(f"  limits: abduct ±20°, pitch −40°/+5°, knee ±90°")
+    print(f"  limits: NONE (rate-limited only)")
     print(f"  parallel-4-bar coupling: {KNEE_PARALLEL_COUPLING:+.1f}")
     print()
 
@@ -353,8 +353,6 @@ def main():
             offset_rad['hip_pitch']  += ry * MAX_RATE_RAD_S * dt
             knee_dir = (1 if b_held else 0) - (1 if x_held else 0)
             offset_rad['knee']       += knee_dir * KNEE_RATE_RAD_S * dt
-            for name, (lo, hi) in JOINT_LIMITS_RAD.items():
-                offset_rad[name] = max(lo, min(hi, offset_rad[name]))
         else:
             for name in offset_rad:
                 offset_rad[name] *= (1.0 - decay_alpha)
