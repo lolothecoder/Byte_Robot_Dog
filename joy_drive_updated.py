@@ -54,8 +54,8 @@ SIGN_KNEE       = +1.0
 KNEE_PARALLEL_COUPLING = +1.0
 
 # ---- Teleop tuning --------------------------------------------------------
-MAX_RATE_RAD_S   = 0.4   # hips: joint rad/s at full stick deflection
-KNEE_RATE_RAD_S  = 2.0   # knee: joint rad/s while B (fwd) or X (back) held
+MAX_RATE_RAD_S   = 1.5   # hips: joint rad/s at full stick deflection
+KNEE_RATE_RAD_S  = 3.0   # knee: joint rad/s while B (fwd) or X (back) held
 DECAY_TIME_S     = 0.3   # ~63% return to home in this many seconds when RB released
 DEADZONE         = 0.15
 TICK_HZ          = 50.0
