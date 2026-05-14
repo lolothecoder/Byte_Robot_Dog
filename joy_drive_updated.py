@@ -42,9 +42,9 @@ SIGN_HIP_PITCH  = -1.0  # carried over from joy_drive.py; verify on bring-up
 SIGN_KNEE       = +1.0
 
 # ---- Teleop tuning --------------------------------------------------------
-HIP_ABDUCT_RATE_RAD_S = 2.0   # LX: joint rad/s at full stick deflection
-HIP_PITCH_RATE_RAD_S  = 0.4   # RY: joint rad/s at full stick deflection
-KNEE_RATE_RAD_S       = 0.1   # B/X: joint rad/s while held
+HIP_ABDUCT_RATE_RAD_S = 2.5   # LX: joint rad/s at full stick deflection
+HIP_PITCH_RATE_RAD_S  = 0.3   # RY: joint rad/s at full stick deflection
+KNEE_RATE_RAD_S       = 0.5   # B/X: joint rad/s while held
 DECAY_TIME_S          = 0.3   # ~63% return to home when RB released
 DEADZONE              = 0.15
 TICK_HZ               = 50.0
