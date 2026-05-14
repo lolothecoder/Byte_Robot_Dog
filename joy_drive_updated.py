@@ -42,10 +42,12 @@ SIGN_HIP_PITCH  = -1.0  # carried over from joy_drive.py; verify on bring-up
 SIGN_KNEE       = +1.0
 
 # ---- Teleop tuning --------------------------------------------------------
-MAX_RATE_RAD_S = 2.0   # hips: joint rad/s at full stick deflection
-DECAY_TIME_S   = 0.3   # ~63% return to home in this many seconds when RB released
-DEADZONE       = 0.15
-TICK_HZ        = 50.0
+HIP_ABDUCT_RATE_RAD_S = 2.0   # LX: joint rad/s at full stick deflection
+HIP_PITCH_RATE_RAD_S  = 0.4   # RY: joint rad/s at full stick deflection
+KNEE_RATE_RAD_S       = 0.4   # B/X: joint rad/s while held
+DECAY_TIME_S          = 0.3   # ~63% return to home when RB released
+DEADZONE              = 0.15
+TICK_HZ               = 50.0
 
 # No joint limits at the moment — rate limiter is the only safety net.
 
@@ -279,16 +281,16 @@ def main():
     pad = F710()
 
     # Hips use the analog accumulator. Knee uses discrete jogs (B/X held).
+    # Each row: (stick_key, sign, gear, node, home_rev, name, rate_rad_s).
     JOINTS = [
-        ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
-        ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
+        ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct', HIP_ABDUCT_RATE_RAD_S),
+        ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch',  HIP_PITCH_RATE_RAD_S),
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
-    # Knee jog state. Hold B/X to move continuously at KNEE_SPEED_REV_S.
-    KNEE_SPEED_REV_S = 15.0
+    # Knee jog state. Hold B/X to move at KNEE_RATE_RAD_S joint rad/s.
     KNEE_UPDATE_HZ   = 30.0
-    knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
+    knee_step_rev    = SIGN_KNEE * GEAR_RATIO * KNEE_RATE_RAD_S / (KNEE_UPDATE_HZ * TAU)
     knee_period_s    = 1.0 / KNEE_UPDATE_HZ
     knee_target_rev  = home['knee']
     last_knee_send   = 0.0
@@ -330,7 +332,9 @@ def main():
 
     print()
     print("Hold RB to drive. Release RB to glide back to home. Ctrl-C to quit.")
-    print(f"  hips: {MAX_RATE_RAD_S:.2f} rad/s   knee: {KNEE_SPEED_REV_S:.1f} motor rev/s")
+    print(f"  hip_abduct: {HIP_ABDUCT_RATE_RAD_S:.2f} rad/s   "
+          f"hip_pitch: {HIP_PITCH_RATE_RAD_S:.2f} rad/s   "
+          f"knee: {KNEE_RATE_RAD_S:.2f} rad/s")
     print(f"  limits: NONE (rate-limited only)")
     print()
 
@@ -343,10 +347,10 @@ def main():
         sticks = {'lx': lx, 'ry': ry}
 
         # Hips: continuous accumulator driven by analog sticks.
-        for stick_key, sign, gear, node, home_rev, name in JOINTS:
+        for stick_key, sign, gear, node, home_rev, name, rate in JOINTS:
             stick = sticks[stick_key]
             if rb:
-                offset_rad[name] += stick * MAX_RATE_RAD_S * dt
+                offset_rad[name] += stick * rate * dt
             else:
                 offset_rad[name] *= (1.0 - decay_alpha)
 
@@ -358,7 +362,7 @@ def main():
         if rb and (knee_now - last_knee_send) >= knee_period_s:
             direction = (1 if b_held else 0) - (1 if x_held else 0)
             if direction != 0:
-                knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                knee_target_rev += direction * knee_step_rev
                 set_input_pos(ser, NODE_KNEE, knee_target_rev)
                 last_knee_send = knee_now
 
