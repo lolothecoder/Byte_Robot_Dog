@@ -42,16 +42,12 @@ SIGN_HIP_PITCH  = -1.0  # carried over from joy_drive.py; verify on bring-up
 SIGN_KNEE       = +1.0
 
 # ---- Teleop tuning --------------------------------------------------------
-MAX_RATE_RAD_S = 0.4   # hips: joint rad/s at full stick deflection
+MAX_RATE_RAD_S = 3.0   # hips: joint rad/s at full stick deflection
 DECAY_TIME_S   = 0.3   # ~63% return to home in this many seconds when RB released
 DEADZONE       = 0.15
 TICK_HZ        = 50.0
 
-JOINT_LIMITS_RAD = {
-    'hip_abduct': (-math.radians(20.0), math.radians(20.0)),
-    'hip_pitch':  (-math.radians(40.0), math.radians(5.0)),
-    'knee':       (-math.radians(90.0), math.radians(90.0)),
-}
+# No joint limits at the moment — rate limiter is the only safety net.
 
 # ---- F710 USB IDs (DirectInput mode, slider on "D") -----------------------
 VENDOR_ID = 0x046D
@@ -297,12 +293,6 @@ def main():
     knee_target_rev  = home['knee']
     last_knee_send   = 0.0
 
-    knee_lo_rad, knee_hi_rad = JOINT_LIMITS_RAD['knee']
-    knee_min_rev = home['knee'] + SIGN_KNEE * GEAR_RATIO * knee_lo_rad / TAU
-    knee_max_rev = home['knee'] + SIGN_KNEE * GEAR_RATIO * knee_hi_rad / TAU
-    if knee_min_rev > knee_max_rev:
-        knee_min_rev, knee_max_rev = knee_max_rev, knee_min_rev
-
     dt = 1.0 / TICK_HZ
     decay_alpha = min(1.0, dt / max(DECAY_TIME_S, 1e-3))
 
@@ -341,7 +331,7 @@ def main():
     print()
     print("Hold RB to drive. Release RB to glide back to home. Ctrl-C to quit.")
     print(f"  hips: {MAX_RATE_RAD_S:.2f} rad/s   knee: {KNEE_SPEED_REV_S:.1f} motor rev/s")
-    print(f"  limits: abduct ±20°, pitch −40°/+5°, knee ±90°")
+    print(f"  limits: NONE (rate-limited only)")
     print()
 
     next_tick = time.monotonic()
@@ -355,10 +345,8 @@ def main():
         # Hips: continuous accumulator driven by analog sticks.
         for stick_key, sign, gear, node, home_rev, name in JOINTS:
             stick = sticks[stick_key]
-            lo, hi = JOINT_LIMITS_RAD[name]
             if rb:
                 offset_rad[name] += stick * MAX_RATE_RAD_S * dt
-                offset_rad[name] = max(lo, min(hi, offset_rad[name]))
             else:
                 offset_rad[name] *= (1.0 - decay_alpha)
 
@@ -371,7 +359,6 @@ def main():
             direction = (1 if b_held else 0) - (1 if x_held else 0)
             if direction != 0:
                 knee_target_rev += direction * SIGN_KNEE * knee_step_rev
-                knee_target_rev = max(knee_min_rev, min(knee_max_rev, knee_target_rev))
                 set_input_pos(ser, NODE_KNEE, knee_target_rev)
                 last_knee_send = knee_now
 
