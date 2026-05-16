@@ -55,8 +55,10 @@ MAX_RATE_RAD_S = 0.4   # joint rad/s at full stick deflection
 DEADZONE = 0.15
 TICK_HZ = 50.0
 
-# Joint angular limits: DISABLED. Be careful — nothing prevents you from
-# driving the leg into the rig.
+# Joint angular limits (rad, relative to startup home). Symmetric ± about home.
+HIP_ABDUCT_LIMIT_RAD = math.radians(20.0)
+HIP_PITCH_LIMIT_RAD  = math.radians(90.0)
+KNEE_LIMIT_RAD       = math.radians(90.0)
 
 # ---- F710 USB IDs (DirectInput mode) ---------------------------------------
 VENDOR_ID = 0x046D
@@ -302,12 +304,21 @@ def main():
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
     # Knee jog state. Hold B/X to move continuously.
-    KNEE_SPEED_REV_S = 5.0           # motor revs per second while button held
+    KNEE_SPEED_REV_S = 10.0          # motor revs per second while button held
     KNEE_UPDATE_HZ   = 30.0         # how often we send a fresh set_input_pos
     knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
     knee_period_s    = 1.0 / KNEE_UPDATE_HZ
     knee_target_rev  = home['knee']
     last_knee_send   = 0.0
+
+    # Per-joint clamp ranges in their native command units, anchored at home.
+    LIMITS_RAD = {
+        'hip_abduct': HIP_ABDUCT_LIMIT_RAD,
+        'hip_pitch':  HIP_PITCH_LIMIT_RAD,
+    }
+    knee_limit_rev = GEAR_RATIO * KNEE_LIMIT_RAD / TAU
+    knee_min_rev = home['knee'] - knee_limit_rev
+    knee_max_rev = home['knee'] + knee_limit_rev
 
     dt = 1.0 / TICK_HZ
 
@@ -348,8 +359,10 @@ def main():
     print()
     print("Hold RB to drive. Release RB: targets hold (no decay). Ctrl-C to quit.")
     print(f"  hip speed: {MAX_RATE_RAD_S:.2f} rad/s   "
-          f"knee speed: {KNEE_SPEED_REV_S:.1f} motor rev/s   "
-          f"limits: NONE")
+          f"knee speed: {KNEE_SPEED_REV_S:.1f} motor rev/s")
+    print(f"  limits: hip_abduct ±{math.degrees(HIP_ABDUCT_LIMIT_RAD):.0f}°  "
+          f"hip_pitch ±{math.degrees(HIP_PITCH_LIMIT_RAD):.0f}°  "
+          f"knee ±{math.degrees(KNEE_LIMIT_RAD):.0f}°")
     print()
 
     next_tick = time.monotonic()
@@ -365,18 +378,27 @@ def main():
             stick = sticks[stick_key]
             if rb:
                 offset_rad[name] += stick * MAX_RATE_RAD_S * dt
+                lim = LIMITS_RAD[name]
+                if offset_rad[name] > lim:
+                    offset_rad[name] = lim
+                elif offset_rad[name] < -lim:
+                    offset_rad[name] = -lim
 
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
-        # Knee: hold B (forward) or X (backward) to move at KNEE_SPEED_REV_S.
+        # Knee: hold X (forward) or B (backward) to move at KNEE_SPEED_REV_S.
         # Sends a fresh set_input_pos every knee_period_s while held — same
         # discrete-command pattern as tune.py's `g <pos>`, just paced.
         knee_now = time.monotonic()
         if rb and (knee_now - last_knee_send) >= knee_period_s:
-            direction = (1 if b_held else 0) - (1 if x_held else 0)
+            direction = (1 if x_held else 0) - (1 if b_held else 0)
             if direction != 0:
                 knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                if knee_target_rev > knee_max_rev:
+                    knee_target_rev = knee_max_rev
+                elif knee_target_rev < knee_min_rev:
+                    knee_target_rev = knee_min_rev
                 set_input_pos(ser, NODE_KNEE, knee_target_rev)
                 last_knee_send = knee_now
 
