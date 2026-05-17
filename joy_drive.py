@@ -315,13 +315,15 @@ def main():
     #            max_windup_rev. Hold the full MAX_CHARGE_S to reach the
     #            -90° back joint limit; release earlier to fire from a
     #            shallower windup pose.
-    #  KICKING:  on release, ramp the setpoint forward to fire_target at
-    #            KNEE_SPEED_REV_S. fire_target = home - SIGN_KNEE *
-    #            charge_ratio * MAX_KICK_REV (clamped to the forward limit).
+    #  KICKING:  on release, ramp the setpoint forward at KNEE_SPEED_REV_S
+    #            to fire_target = 2*home - knee_cmd_at_release. That is
+    #            the point-mirror of the cocked pose around home, so the
+    #            kick swings to the same angle forward as the leg was
+    #            lifted back. Symmetric joint limits guarantee it stays
+    #            in range.
     #  RETURNING: ramp back to home at KNEE_SPEED_REV_S. Also entered if
     #            RB is released mid-charge — the leg never freezes lifted.
-    MAX_CHARGE_S     = 1.5           # full power / full back-lift after this many s
-    MAX_KICK_REV     = 2.0           # forward swing amplitude on a max-power kick
+    MAX_CHARGE_S     = 1.5           # full back-lift after this many s
     # 'back' = +SIGN_KNEE; 'forward' (kick direction) = -SIGN_KNEE.
     kick_state       = 'IDLE'        # 'IDLE' | 'CHARGING' | 'KICKING' | 'RETURNING'
     charge_start     = 0.0
@@ -381,8 +383,9 @@ def main():
     print("Hold RB to drive. Release RB: targets hold (no decay). Ctrl-C to quit.")
     print(f"  hip speed: {MAX_RATE_RAD_S:.2f} rad/s   "
           f"knee speed: {KNEE_SPEED_REV_S:.1f} motor rev/s")
-    print(f"  B: hold to charge a FIFA-style kick (max {MAX_CHARGE_S:.1f}s -> "
-          f"{MAX_KICK_REV:.1f} rev). Release fires windup -> kick at knee speed.")
+    print(f"  B: hold to lift leg back (max {MAX_CHARGE_S:.1f}s -> "
+          f"{math.degrees(KNEE_LIMIT_RAD):.0f}°), release to swing forward "
+          f"the same angle at knee speed.")
     print(f"  limits: hip_abduct ±{math.degrees(HIP_ABDUCT_LIMIT_RAD):.0f}°  "
           f"hip_pitch ±{math.degrees(HIP_PITCH_LIMIT_RAD):.0f}°  "
           f"knee ±{math.degrees(KNEE_LIMIT_RAD):.0f}°")
@@ -436,8 +439,10 @@ def main():
             charge_s = min(knee_now - charge_start, MAX_CHARGE_S)
             last_charge_ratio = charge_s / MAX_CHARGE_S
             if not b_held:
-                # Fire from wherever the lift got to.
-                fire_target = knee_target_rev - SIGN_KNEE * (last_charge_ratio * MAX_KICK_REV)
+                # Fire from wherever the lift got to. The forward swing
+                # mirrors the back amplitude around home: a lift of +A
+                # past home becomes a kick to home - A.
+                fire_target = 2.0 * knee_target_rev - knee_cmd_rev
                 if fire_target > knee_max_rev:
                     fire_target = knee_max_rev
                 elif fire_target < knee_min_rev:
