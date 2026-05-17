@@ -305,7 +305,7 @@ def main():
 
     # Knee rest pose (never moves at runtime) and live commanded position
     # (rate-limited by KNEE_SPEED_REV_S during a kick).
-    KNEE_SPEED_REV_S = 15.0          # motor revs/s — paces every knee phase
+    KNEE_SPEED_REV_S = 25.0          # motor revs/s — paces every knee phase
     knee_target_rev  = home['knee']
     knee_cmd_rev     = home['knee']
 
@@ -404,13 +404,9 @@ def main():
         sticks = {'lx': lx, 'ly': ly, 'ry': ry}
 
         # Hips: continuous accumulator driven by analog sticks. Release = hold.
-        # Accumulation is suspended while the kick state machine is active,
-        # so an accidental thumb bump on LX/RY when pressing B can't drift
-        # the hips during the ~2 s kick sequence. The setpoint is still
-        # resent every tick, so ODrive keeps holding the deflected pose.
         for stick_key, sign, gear, node, home_rev, name in JOINTS:
             stick = sticks[stick_key]
-            if rb and kick_state == 'IDLE':
+            if rb:
                 offset_rad[name] += stick * MAX_RATE_RAD_S * dt
                 lim = LIMITS_RAD[name]
                 if offset_rad[name] > lim:
