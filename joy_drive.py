@@ -309,22 +309,23 @@ def main():
     knee_target_rev  = home['knee']
     knee_cmd_rev     = home['knee']
 
-    # FIFA-style charged kick on B. Hold to charge, release to fire.
-    # On release: windup (ramp back) -> brief dwell -> kick (ramp forward)
-    # -> return. Every phase ramps the setpoint at KNEE_SPEED_REV_S, so
-    # bumping that number makes the whole kick proportionally snappier
-    # (just like the old X/B jogs).
-    MAX_CHARGE_S     = 1.5           # full power after holding 1.5 s
+    # FIFA-style charged kick on B.
+    #  CHARGING: while B is held, leg lifts back continuously. Position
+    #            at time t is home + SIGN_KNEE * (t / MAX_CHARGE_S) *
+    #            max_windup_rev. Hold the full MAX_CHARGE_S to reach the
+    #            -90° back joint limit; release earlier to fire from a
+    #            shallower windup pose.
+    #  KICKING:  on release, ramp the setpoint forward to fire_target at
+    #            KNEE_SPEED_REV_S. fire_target = home - SIGN_KNEE *
+    #            charge_ratio * MAX_KICK_REV (clamped to the forward limit).
+    #  RETURNING: ramp back to home at KNEE_SPEED_REV_S. Also entered if
+    #            RB is released mid-charge — the leg never freezes lifted.
+    MAX_CHARGE_S     = 1.5           # full power / full back-lift after this many s
     MAX_KICK_REV     = 2.0           # forward swing amplitude on a max-power kick
-    WINDUP_RATIO     = 0.3           # windup amplitude as a fraction of kick amplitude
-    WINDUP_DWELL_S   = 0.1           # pause at the cocked pose before snapping forward
-    # 'back' = same direction as the old X-jog (+SIGN_KNEE in code);
-    # 'forward' = the kick direction (-SIGN_KNEE in code).
-    kick_state       = 'IDLE'        # 'IDLE' | 'CHARGING' | 'WINDING_UP' | 'KICKING' | 'RETURNING'
+    # 'back' = +SIGN_KNEE; 'forward' (kick direction) = -SIGN_KNEE.
+    kick_state       = 'IDLE'        # 'IDLE' | 'CHARGING' | 'KICKING' | 'RETURNING'
     charge_start     = 0.0
-    windup_target    = home['knee']
     fire_target      = home['knee']
-    dwell_end_at     = 0.0
     last_charge_ratio = 0.0          # for status line
 
     # Per-joint clamp ranges in their native command units, anchored at home.
@@ -335,6 +336,10 @@ def main():
     knee_limit_rev = GEAR_RATIO * KNEE_LIMIT_RAD / TAU
     knee_min_rev = home['knee'] - knee_limit_rev
     knee_max_rev = home['knee'] + knee_limit_rev
+
+    # Max back-lift amplitude during charge. Tied to the joint limit so a
+    # max-charge windup parks exactly at -90° back.
+    max_windup_rev = knee_limit_rev
 
     dt = 1.0 / TICK_HZ
 
@@ -405,49 +410,47 @@ def main():
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
-        # Knee: B is the only knee input. Hold to charge a FIFA-style kick,
-        # release to fire. The fire sequence ramps the commanded setpoint
-        # at KNEE_SPEED_REV_S through windup (+SIGN_KNEE) -> dwell -> kick
-        # (-SIGN_KNEE) -> return. RB released during charge cancels; once
-        # WINDING_UP has begun the sequence runs to completion so the leg
-        # never freezes mid-swing.
+        # Knee: B is the only knee input. While held, the leg lifts back
+        # smoothly toward the -90° joint limit (full lift at MAX_CHARGE_S).
+        # On release, the setpoint ramps forward through home at
+        # KNEE_SPEED_REV_S to fire_target, then back to home. RB released
+        # mid-charge sends the leg into RETURNING so it never freezes lifted.
         knee_now = time.monotonic()
         knee_step_rev = KNEE_SPEED_REV_S * dt
 
+        # State entry transitions ------------------------------------------
         if not rb:
             if kick_state == 'CHARGING':
-                kick_state = 'IDLE'
+                # Cancel the charge but bring the lifted leg home.
+                kick_state = 'RETURNING'
                 last_charge_ratio = 0.0
         elif kick_state == 'IDLE' and b_held:
             kick_state = 'CHARGING'
             charge_start = knee_now
             last_charge_ratio = 0.0
-        elif kick_state == 'CHARGING':
+
+        # CHARGING: the leg actually moves back during this phase. The
+        # setpoint is a direct function of charge time, not rate-limited —
+        # MAX_CHARGE_S itself defines how fast the lift sweeps.
+        if kick_state == 'CHARGING':
             charge_s = min(knee_now - charge_start, MAX_CHARGE_S)
             last_charge_ratio = charge_s / MAX_CHARGE_S
             if not b_held:
-                # Lock in amplitudes and the two target poses for the rest
-                # of the sequence. knee_target_rev stays put as the home
-                # we'll ramp back to.
-                kick_rev = last_charge_ratio * MAX_KICK_REV
-                windup_rev = WINDUP_RATIO * kick_rev
-                windup_target = max(knee_min_rev, min(knee_max_rev,
-                    knee_target_rev + SIGN_KNEE * windup_rev))
-                fire_target = max(knee_min_rev, min(knee_max_rev,
-                    knee_target_rev - SIGN_KNEE * kick_rev))
-                kick_state = 'WINDING_UP'
-
-        if kick_state == 'WINDING_UP':
-            if knee_cmd_rev != windup_target:
-                if knee_cmd_rev < windup_target:
-                    knee_cmd_rev = min(knee_cmd_rev + knee_step_rev, windup_target)
-                else:
-                    knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, windup_target)
-                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
-                if knee_cmd_rev == windup_target:
-                    dwell_end_at = knee_now + WINDUP_DWELL_S
-            elif knee_now >= dwell_end_at:
+                # Fire from wherever the lift got to.
+                fire_target = knee_target_rev - SIGN_KNEE * (last_charge_ratio * MAX_KICK_REV)
+                if fire_target > knee_max_rev:
+                    fire_target = knee_max_rev
+                elif fire_target < knee_min_rev:
+                    fire_target = knee_min_rev
                 kick_state = 'KICKING'
+            else:
+                target = knee_target_rev + SIGN_KNEE * (last_charge_ratio * max_windup_rev)
+                if target > knee_max_rev:
+                    target = knee_max_rev
+                elif target < knee_min_rev:
+                    target = knee_min_rev
+                knee_cmd_rev = target
+                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
 
         if kick_state == 'KICKING':
             if knee_cmd_rev != fire_target:
