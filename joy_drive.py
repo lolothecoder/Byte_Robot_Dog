@@ -222,15 +222,18 @@ class F710:
         return d[1], d[2], d[3], d[4]  # lx, ly, rx, ry
 
     def buttons(self):
-        """(x_held, b_held, face_byte). Best-guess F710 DInput mapping; verify with face_byte."""
+        """(x_held, b_held, start_held, face_byte). Best-guess F710 DInput
+        mapping; verify with face_byte / shoulder if anything is wrong."""
         with self._lock:
             d = self._latest
         if len(d) < 8:
-            return False, False, 0
+            return False, False, False, 0
         face = d[5]
-        x_held = bool((face >> 4) & 1)  # X (blue) — guess
-        b_held = bool((face >> 6) & 1)  # B (red)  — guess
-        return x_held, b_held, face
+        shoulder = d[6]
+        x_held = bool((face >> 4) & 1)      # X (blue) — guess
+        b_held = bool((face >> 6) & 1)      # B (red)  — guess
+        start_held = bool((shoulder >> 5) & 1)  # Start  — guess
+        return x_held, b_held, start_held, face
 
     def stop(self):
         self._stop.set()
@@ -238,6 +241,72 @@ class F710:
             usb.util.dispose_resources(self.dev)
         except Exception:
             pass
+
+
+# =============================================================================
+#  Arm / disarm helpers (used at startup and for in-loop Start/RB rearming)
+# =============================================================================
+def wait_for_rb_hold(pad, hold_s, label="Hold RB"):
+    """Block until RB is held continuously for hold_s. Prints a one-shot
+    'RB down...' line on each fresh press so the user knows the hold is
+    registered."""
+    held_since = None
+    announced = False
+    print(f"{label} for {hold_s:.0f} s to (re)energize. Ctrl-C to abort.")
+    while True:
+        _lx, _ly, _ry, rb = pad.state()
+        now = time.monotonic()
+        if rb:
+            if held_since is None:
+                held_since = now
+                if not announced:
+                    print("  RB down... keep holding.")
+                    announced = True
+            if now - held_since >= hold_s:
+                return
+        else:
+            held_since = None
+            announced = False
+        time.sleep(0.05)
+
+
+def energize_and_lock(ser, home):
+    """Flip every node into CLOSED_LOOP, read its fresh encoder position
+    into `home`, and lock each motor at the position we just read.
+
+    Returns True on success. On failure (encoder timeout) the caller is
+    responsible for the next safety step — we leave the bus alone so
+    nothing surprising happens between failure and the caller's recovery.
+    """
+    print("Energizing (CLOSED_LOOP)...")
+    for node in (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE):
+        set_axis_state(ser, node, 8)  # AXIS_STATE_CLOSED_LOOP_CONTROL
+        time.sleep(0.3)
+    time.sleep(0.5)
+    ser.reset_input_buffer()
+
+    print("Reading current positions...")
+    for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
+                       ('hip_pitch',  NODE_HIP_PITCH),
+                       ('knee',       NODE_KNEE)):
+        p = read_position(ser, node, timeout=3.0)
+        if p is None:
+            print(f"ERROR: no encoder data for {name} (node {node}). "
+                  "Check that axis0.config.can.encoder_msg_rate_ms = 10 "
+                  "is saved on this ODrive.")
+            return False
+        home[name] = p
+        print(f"  {name:11s} (node {node}): {p:+.4f} rev")
+
+    # Lock each motor at the freshly-read position so the offset
+    # accumulator can only move it slowly from here.
+    for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
+                       ('hip_pitch',  NODE_HIP_PITCH),
+                       ('knee',       NODE_KNEE)):
+        set_input_pos(ser, node, home[name])
+    ser.flush()
+    time.sleep(0.2)
+    return True
 
 
 # =============================================================================
@@ -260,69 +329,40 @@ def main():
     print("Opening F710...")
     pad = F710()
 
-    # 3. Safety gate: wait for the user to hold RB for ARM_HOLD_S before
-    #    energizing. Power-on alone never arms the motors — every session
-    #    needs a deliberate hold from a human at the gamepad.
+    # 3. Initial arm gate. Power-on alone never energizes the motors —
+    #    every session needs a deliberate RB hold from a human at the
+    #    gamepad. The same helper is used for in-loop rearm after a Start
+    #    disarm, so the bring-up flow stays uniform.
     ARM_HOLD_S = 1.0
-    print(f"Hold RB for {ARM_HOLD_S:.0f} s to energize. Ctrl-C to abort.")
-    held_since = None
-    while True:
-        _lx, _ly, _ry, rb = pad.state()
-        now = time.monotonic()
-        if rb:
-            if held_since is None:
-                held_since = now
-                print("  RB down... keep holding.")
-            if now - held_since >= ARM_HOLD_S:
-                print("  Armed.")
-                break
-        else:
-            held_since = None
-        time.sleep(0.05)
+    wait_for_rb_hold(pad, ARM_HOLD_S, label="Hold RB")
+    print("  Armed.")
 
-    # 4. Energize. Encoder frames are stale in IDLE on the CyberBeast,
-    #    so we have to flip CLOSED_LOOP first to get fresh estimates.
-    print("Energizing (CLOSED_LOOP)...")
-    for node in (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE):
-        set_axis_state(ser, node, 8)  # AXIS_STATE_CLOSED_LOOP_CONTROL
-        time.sleep(0.3)
-    time.sleep(0.5)
-    ser.reset_input_buffer()
-
-    # 5. Read fresh encoder values now that the motors are emitting
-    #    real-time estimates.
-    print("Reading current positions...")
     home = {}
-    for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
-                       ('hip_pitch',  NODE_HIP_PITCH),
-                       ('knee',       NODE_KNEE)):
-        p = read_position(ser, node, timeout=3.0)
-        if p is None:
-            print(f"ERROR: no encoder data for {name} (node {node}). "
-                  "Check that axis0.config.can.encoder_msg_rate_ms = 10 "
-                  "is saved on this ODrive. Aborting (motors -> IDLE).")
-            idle_all(ser)
-            ser.close()
-            return 1
-        home[name] = p
-        print(f"  {name:11s} (node {node}): {p:+.4f} rev")
-
-    # 6. Lock each motor at the freshly-read position. From here, the
-    #    offset accumulator only moves the target at MAX_RATE_RAD_S,
-    #    so even a deflected stick at startup can't snap the leg.
-    for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
-                       ('hip_pitch',  NODE_HIP_PITCH),
-                       ('knee',       NODE_KNEE)):
-        set_input_pos(ser, node, home[name])
-    ser.flush()
-    time.sleep(0.2)
+    if not energize_and_lock(ser, home):
+        print("Initial energize failed. Aborting (motors -> IDLE).")
+        idle_all(ser)
+        ser.close()
+        return 1
 
     # Hips use the analog accumulator (proven to work).
     # Knee uses tune.py-style discrete jogs: one button press = one set_input_pos.
-    JOINTS = [
-        ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
-        ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
-    ]
+    # JOINTS / knee_min_rev / knee_max_rev all close over the current home
+    # values, so they need to be rebuilt every time we rearm (the leg might
+    # have been physically moved while idle).
+    LIMITS_RAD = {
+        'hip_abduct': HIP_ABDUCT_LIMIT_RAD,
+        'hip_pitch':  HIP_PITCH_LIMIT_RAD,
+    }
+    knee_limit_rev = GEAR_RATIO * KNEE_LIMIT_RAD / TAU
+
+    def build_kinematics():
+        joints = [
+            ('lx', SIGN_HIP_ABDUCT, GEAR_RATIO, NODE_HIP_ABDUCT, home['hip_abduct'], 'hip_abduct'),
+            ('ry', SIGN_HIP_PITCH,  GEAR_RATIO, NODE_HIP_PITCH,  home['hip_pitch'],  'hip_pitch'),
+        ]
+        return joints, home['knee'] - knee_limit_rev, home['knee'] + knee_limit_rev
+
+    JOINTS, knee_min_rev, knee_max_rev = build_kinematics()
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
     # Knee jog state. Hold B/X to move continuously.
@@ -333,14 +373,8 @@ def main():
     knee_target_rev  = home['knee']
     last_knee_send   = 0.0
 
-    # Per-joint clamp ranges in their native command units, anchored at home.
-    LIMITS_RAD = {
-        'hip_abduct': HIP_ABDUCT_LIMIT_RAD,
-        'hip_pitch':  HIP_PITCH_LIMIT_RAD,
-    }
-    knee_limit_rev = GEAR_RATIO * KNEE_LIMIT_RAD / TAU
-    knee_min_rev = home['knee'] - knee_limit_rev
-    knee_max_rev = home['knee'] + knee_limit_rev
+    armed = True
+    rearm_held_since = None
 
     dt = 1.0 / TICK_HZ
 
@@ -385,6 +419,7 @@ def main():
     print(f"  limits: hip_abduct ±{math.degrees(HIP_ABDUCT_LIMIT_RAD):.0f}°  "
           f"hip_pitch ±{math.degrees(HIP_PITCH_LIMIT_RAD):.0f}°  "
           f"knee ±{math.degrees(KNEE_LIMIT_RAD):.0f}°")
+    print(f"  Start: idle all motors.  Hold RB {ARM_HOLD_S:.0f} s to re-arm.")
     print()
 
     next_tick = time.monotonic()
@@ -392,8 +427,66 @@ def main():
     PRINT_PERIOD = 0.1  # 10 Hz; stdout cost at this rate is negligible vs the 20 ms tick budget
     while True:
         lx, ly, ry, rb = pad.state()
-        x_held, b_held, face_byte = pad.buttons()
+        x_held, b_held, start_held, face_byte = pad.buttons()
         sticks = {'lx': lx, 'ly': ly, 'ry': ry}
+
+        # Disarm path: Start while armed -> idle everything and drop into
+        # the disarmed state. We don't send any further motor commands
+        # until the user holds RB again.
+        if armed and start_held:
+            print("\nStart pressed: disarming, motors -> IDLE.")
+            try:
+                idle_all(ser)
+            except Exception:
+                pass
+            armed = False
+            rearm_held_since = None
+            # Skip the rest of this tick so we don't immediately try to
+            # send hip/knee setpoints to motors we just idled.
+            time.sleep(0.05)
+            continue
+
+        # Disarmed path: poll for the RB hold. While disarmed we send no
+        # set_input_pos at all — the ODrives are in IDLE and will ignore
+        # them anyway, but skipping the writes keeps the bus quiet.
+        if not armed:
+            now = time.monotonic()
+            if rb:
+                if rearm_held_since is None:
+                    rearm_held_since = now
+                    print("\nRB down... keep holding to re-arm.")
+                elif now - rearm_held_since >= ARM_HOLD_S:
+                    print("\nRe-arming...")
+                    if energize_and_lock(ser, home):
+                        JOINTS, knee_min_rev, knee_max_rev = build_kinematics()
+                        for n in offset_rad:
+                            offset_rad[n] = 0.0
+                        knee_target_rev = home['knee']
+                        last_knee_send = 0.0
+                        armed = True
+                        print("  Re-armed.")
+                    else:
+                        print("  Re-arm failed; staying disarmed.")
+                        try:
+                            idle_all(ser)
+                        except Exception:
+                            pass
+                    rearm_held_since = None
+            else:
+                rearm_held_since = None
+
+            if now - last_print > PRINT_PERIOD:
+                sys.stdout.write(
+                    f"\r[DISARMED]  RB={'1' if rb else '0'}  "
+                    f"(hold RB {ARM_HOLD_S:.0f}s to re-arm)        "
+                )
+                sys.stdout.flush()
+                last_print = now
+
+            time.sleep(0.05)
+            # Reset the tick clock so we don't burst-write when armed again.
+            next_tick = time.monotonic()
+            continue
 
         # Hips: continuous accumulator driven by analog sticks. Release = hold.
         for stick_key, sign, gear, node, home_rev, name in JOINTS:
@@ -430,9 +523,10 @@ def main():
         if now - last_print > PRINT_PERIOD:
             rlx, _rly, _rrx, rry = pad.raw()
             sys.stdout.write(
-                f"\rRB={'1' if rb else '0'}  "
+                f"\r[ARMED]  RB={'1' if rb else '0'}  "
                 f"LX={rlx:3d} RY={rry:3d}  "
-                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
+                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'} "
+                f"St={'1' if start_held else '0'}  "
                 f"knee_tgt={knee_target_rev:+.3f}    "
             )
             sys.stdout.flush()
