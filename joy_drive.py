@@ -324,10 +324,14 @@ def main():
     #  RETURNING: ramp back to home at KNEE_SPEED_REV_S. Also entered if
     #            RB is released mid-charge — the leg never freezes lifted.
     MAX_CHARGE_S     = 1.5           # full back-lift after this many s
+    KICK_HOLD_S      = 0.30          # hold the setpoint at fire_target this
+                                     # long so the rotor actually reaches it
+                                     # before we start ramping back to home
     # 'back' = +SIGN_KNEE; 'forward' (kick direction) = -SIGN_KNEE.
     kick_state       = 'IDLE'        # 'IDLE' | 'CHARGING' | 'KICKING' | 'RETURNING'
     charge_start     = 0.0
     fire_target      = home['knee']
+    kick_hold_end_at = 0.0
     last_charge_ratio = 0.0          # for status line
 
     # Per-joint clamp ranges in their native command units, anchored at home.
@@ -464,7 +468,12 @@ def main():
                 else:
                     knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, fire_target)
                 set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
-            else:
+                if knee_cmd_rev == fire_target:
+                    # Setpoint at the extension; give the rotor time to
+                    # catch up before reversing direction, otherwise it
+                    # turns around mid-flight and never reaches the angle.
+                    kick_hold_end_at = knee_now + KICK_HOLD_S
+            elif knee_now >= kick_hold_end_at:
                 kick_state = 'RETURNING'
 
         if kick_state == 'RETURNING':
