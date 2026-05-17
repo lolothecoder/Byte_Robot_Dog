@@ -57,7 +57,7 @@ TICK_HZ = 50.0
 
 # Joint angular limits (rad, relative to startup home). Symmetric ± about home.
 HIP_ABDUCT_LIMIT_RAD = math.radians(20.0)
-HIP_PITCH_LIMIT_RAD  = math.radians(90.0)
+HIP_PITCH_LIMIT_RAD  = math.radians(20.0)
 KNEE_LIMIT_RAD       = math.radians(90.0)
 
 # ---- F710 USB IDs (DirectInput mode) ---------------------------------------
@@ -323,7 +323,7 @@ def main():
     #            in range.
     #  RETURNING: ramp back to home at KNEE_SPEED_REV_S. Also entered if
     #            RB is released mid-charge — the leg never freezes lifted.
-    MAX_CHARGE_S     = 1.5           # full back-lift after this many s
+    MAX_CHARGE_S     = 0.8           # full back-lift after this many s
     KICK_HOLD_S      = 0.30          # hold the setpoint at fire_target this
                                      # long so the rotor actually reaches it
                                      # before we start ramping back to home
