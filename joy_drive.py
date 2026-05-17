@@ -57,7 +57,7 @@ TICK_HZ = 50.0
 
 # Joint angular limits (rad, relative to startup home). Symmetric ± about home.
 HIP_ABDUCT_LIMIT_RAD = math.radians(20.0)
-HIP_PITCH_LIMIT_RAD  = math.radians(20.0)
+HIP_PITCH_LIMIT_RAD  = math.radians(90.0)
 KNEE_LIMIT_RAD       = math.radians(90.0)
 
 # ---- F710 USB IDs (DirectInput mode) ---------------------------------------
@@ -303,36 +303,13 @@ def main():
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
-    # Knee rest pose (never moves at runtime) and live commanded position
-    # (rate-limited by KNEE_SPEED_REV_S during a kick).
-    KNEE_SPEED_REV_S = 25.0          # motor revs/s — paces every knee phase
+    # Knee jog state. Hold B/X to move continuously.
+    KNEE_SPEED_REV_S = 10.0          # motor revs per second while button held
+    KNEE_UPDATE_HZ   = 30.0         # how often we send a fresh set_input_pos
+    knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
+    knee_period_s    = 1.0 / KNEE_UPDATE_HZ
     knee_target_rev  = home['knee']
-    knee_cmd_rev     = home['knee']
-
-    # FIFA-style charged kick on B.
-    #  CHARGING: while B is held, leg lifts back continuously. Position
-    #            at time t is home + SIGN_KNEE * (t / MAX_CHARGE_S) *
-    #            max_windup_rev. Hold the full MAX_CHARGE_S to reach the
-    #            -90° back joint limit; release earlier to fire from a
-    #            shallower windup pose.
-    #  KICKING:  on release, ramp the setpoint forward at KNEE_SPEED_REV_S
-    #            to fire_target = 2*home - knee_cmd_at_release. That is
-    #            the point-mirror of the cocked pose around home, so the
-    #            kick swings to the same angle forward as the leg was
-    #            lifted back. Symmetric joint limits guarantee it stays
-    #            in range.
-    #  RETURNING: ramp back to home at KNEE_SPEED_REV_S. Also entered if
-    #            RB is released mid-charge — the leg never freezes lifted.
-    MAX_CHARGE_S     = 0.8           # full back-lift after this many s
-    KICK_HOLD_S      = 0.30          # hold the setpoint at fire_target this
-                                     # long so the rotor actually reaches it
-                                     # before we start ramping back to home
-    # 'back' = +SIGN_KNEE; 'forward' (kick direction) = -SIGN_KNEE.
-    kick_state       = 'IDLE'        # 'IDLE' | 'CHARGING' | 'KICKING' | 'RETURNING'
-    charge_start     = 0.0
-    fire_target      = home['knee']
-    kick_hold_end_at = 0.0
-    last_charge_ratio = 0.0          # for status line
+    last_knee_send   = 0.0
 
     # Per-joint clamp ranges in their native command units, anchored at home.
     LIMITS_RAD = {
@@ -342,10 +319,6 @@ def main():
     knee_limit_rev = GEAR_RATIO * KNEE_LIMIT_RAD / TAU
     knee_min_rev = home['knee'] - knee_limit_rev
     knee_max_rev = home['knee'] + knee_limit_rev
-
-    # Max back-lift amplitude during charge. Tied to the joint limit so a
-    # max-charge windup parks exactly at -90° back.
-    max_windup_rev = knee_limit_rev
 
     dt = 1.0 / TICK_HZ
 
@@ -387,9 +360,6 @@ def main():
     print("Hold RB to drive. Release RB: targets hold (no decay). Ctrl-C to quit.")
     print(f"  hip speed: {MAX_RATE_RAD_S:.2f} rad/s   "
           f"knee speed: {KNEE_SPEED_REV_S:.1f} motor rev/s")
-    print(f"  B: hold to lift leg back (max {MAX_CHARGE_S:.1f}s -> "
-          f"{math.degrees(KNEE_LIMIT_RAD):.0f}°), release to swing forward "
-          f"the same angle at knee speed.")
     print(f"  limits: hip_abduct ±{math.degrees(HIP_ABDUCT_LIMIT_RAD):.0f}°  "
           f"hip_pitch ±{math.degrees(HIP_PITCH_LIMIT_RAD):.0f}°  "
           f"knee ±{math.degrees(KNEE_LIMIT_RAD):.0f}°")
@@ -400,7 +370,7 @@ def main():
     PRINT_PERIOD = 0.1  # 10 Hz; stdout cost at this rate is negligible vs the 20 ms tick budget
     while True:
         lx, ly, ry, rb = pad.state()
-        _x_held, b_held, face_byte = pad.buttons()
+        x_held, b_held, face_byte = pad.buttons()
         sticks = {'lx': lx, 'ly': ly, 'ry': ry}
 
         # Hips: continuous accumulator driven by analog sticks. Release = hold.
@@ -417,88 +387,30 @@ def main():
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
-        # Knee: B is the only knee input. While held, the leg lifts back
-        # smoothly toward the -90° joint limit (full lift at MAX_CHARGE_S).
-        # On release, the setpoint ramps forward through home at
-        # KNEE_SPEED_REV_S to fire_target, then back to home. RB released
-        # mid-charge sends the leg into RETURNING so it never freezes lifted.
+        # Knee: hold X (forward) or B (backward) to move at KNEE_SPEED_REV_S.
+        # Sends a fresh set_input_pos every knee_period_s while held — same
+        # discrete-command pattern as tune.py's `g <pos>`, just paced.
         knee_now = time.monotonic()
-        knee_step_rev = KNEE_SPEED_REV_S * dt
-
-        # State entry transitions ------------------------------------------
-        if not rb:
-            if kick_state == 'CHARGING':
-                # Cancel the charge but bring the lifted leg home.
-                kick_state = 'RETURNING'
-                last_charge_ratio = 0.0
-        elif kick_state == 'IDLE' and b_held:
-            kick_state = 'CHARGING'
-            charge_start = knee_now
-            last_charge_ratio = 0.0
-
-        # CHARGING: the leg actually moves back during this phase. The
-        # setpoint is a direct function of charge time, not rate-limited —
-        # MAX_CHARGE_S itself defines how fast the lift sweeps.
-        if kick_state == 'CHARGING':
-            charge_s = min(knee_now - charge_start, MAX_CHARGE_S)
-            last_charge_ratio = charge_s / MAX_CHARGE_S
-            if not b_held:
-                # Fire from wherever the lift got to. The forward swing
-                # mirrors the back amplitude around home: a lift of +A
-                # past home becomes a kick to home - A.
-                fire_target = 2.0 * knee_target_rev - knee_cmd_rev
-                if fire_target > knee_max_rev:
-                    fire_target = knee_max_rev
-                elif fire_target < knee_min_rev:
-                    fire_target = knee_min_rev
-                kick_state = 'KICKING'
-            else:
-                target = knee_target_rev + SIGN_KNEE * (last_charge_ratio * max_windup_rev)
-                if target > knee_max_rev:
-                    target = knee_max_rev
-                elif target < knee_min_rev:
-                    target = knee_min_rev
-                knee_cmd_rev = target
-                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
-
-        if kick_state == 'KICKING':
-            if knee_cmd_rev != fire_target:
-                if knee_cmd_rev < fire_target:
-                    knee_cmd_rev = min(knee_cmd_rev + knee_step_rev, fire_target)
-                else:
-                    knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, fire_target)
-                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
-                if knee_cmd_rev == fire_target:
-                    # Setpoint at the extension; give the rotor time to
-                    # catch up before reversing direction, otherwise it
-                    # turns around mid-flight and never reaches the angle.
-                    kick_hold_end_at = knee_now + KICK_HOLD_S
-            elif knee_now >= kick_hold_end_at:
-                kick_state = 'RETURNING'
-
-        if kick_state == 'RETURNING':
-            if knee_cmd_rev != knee_target_rev:
-                if knee_cmd_rev < knee_target_rev:
-                    knee_cmd_rev = min(knee_cmd_rev + knee_step_rev, knee_target_rev)
-                else:
-                    knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, knee_target_rev)
-                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
-            else:
-                kick_state = 'IDLE'
-                last_charge_ratio = 0.0
+        if rb and (knee_now - last_knee_send) >= knee_period_s:
+            direction = (1 if x_held else 0) - (1 if b_held else 0)
+            if direction != 0:
+                knee_target_rev += direction * SIGN_KNEE * knee_step_rev
+                if knee_target_rev > knee_max_rev:
+                    knee_target_rev = knee_max_rev
+                elif knee_target_rev < knee_min_rev:
+                    knee_target_rev = knee_min_rev
+                set_input_pos(ser, NODE_KNEE, knee_target_rev)
+                last_knee_send = knee_now
 
         ser.flush()
 
         now = time.monotonic()
         if now - last_print > PRINT_PERIOD:
             rlx, _rly, _rrx, rry = pad.raw()
-            bars = int(round(last_charge_ratio * 10))
-            charge_bar = '#' * bars + '-' * (10 - bars)
             sys.stdout.write(
                 f"\rRB={'1' if rb else '0'}  "
                 f"LX={rlx:3d} RY={rry:3d}  "
-                f"B={'1' if b_held else '0'}  "
-                f"kick[{charge_bar}] {kick_state:10s}  "
+                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
                 f"knee_tgt={knee_target_rev:+.3f}    "
             )
             sys.stdout.flush()
