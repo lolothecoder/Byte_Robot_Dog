@@ -1,0 +1,27 @@
+[Unit]
+Description=Byte Robot Dog joystick teleop (joy_drive.py)
+# Wait for the basic system, USB stack, and serial device to be ready.
+After=multi-user.target dev-ttyUSB0.device
+# If the Waveshare isn't plugged in at boot, fail the unit cleanly instead
+# of starting Python and erroring out inside it.
+Requires=dev-ttyUSB0.device
+
+[Service]
+Type=simple
+User=byte
+WorkingDirectory=/home/byte/Documents/Byte_Robot_Dog
+ExecStart=/usr/bin/python3 -u /home/byte/Documents/Byte_Robot_Dog/joy_drive.py
+# joy_drive.py installs a SIGTERM handler that idles every motor before
+# exiting; give it a comfortable window to finish that work.
+TimeoutStopSec=10
+KillSignal=SIGTERM
+# If the dongle or ODrive bus drops out we'll exit non-zero — bounce and
+# wait for the user to do the RB-hold arm gate again. RestartSec is high
+# enough that a flaky cable won't spin in a tight retry loop.
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

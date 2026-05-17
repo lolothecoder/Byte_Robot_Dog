@@ -253,7 +253,34 @@ def main():
     time.sleep(0.3)
     ser.reset_input_buffer()
 
-    # 2. Energize. Encoder frames are stale in IDLE on the CyberBeast,
+    # 2. Open the F710. With auto-start enabled, this is the gate that
+    #    keeps a freshly-booted Jetson from energizing motors before the
+    #    user is ready: if the dongle isn't plugged in, F710() raises and
+    #    we exit cleanly with the motors still IDLE.
+    print("Opening F710...")
+    pad = F710()
+
+    # 3. Safety gate: wait for the user to hold RB for ARM_HOLD_S before
+    #    energizing. Power-on alone never arms the motors — every session
+    #    needs a deliberate hold from a human at the gamepad.
+    ARM_HOLD_S = 1.0
+    print(f"Hold RB for {ARM_HOLD_S:.0f} s to energize. Ctrl-C to abort.")
+    held_since = None
+    while True:
+        _lx, _ly, _ry, rb = pad.state()
+        now = time.monotonic()
+        if rb:
+            if held_since is None:
+                held_since = now
+                print("  RB down... keep holding.")
+            if now - held_since >= ARM_HOLD_S:
+                print("  Armed.")
+                break
+        else:
+            held_since = None
+        time.sleep(0.05)
+
+    # 4. Energize. Encoder frames are stale in IDLE on the CyberBeast,
     #    so we have to flip CLOSED_LOOP first to get fresh estimates.
     print("Energizing (CLOSED_LOOP)...")
     for node in (NODE_HIP_ABDUCT, NODE_HIP_PITCH, NODE_KNEE):
@@ -262,7 +289,7 @@ def main():
     time.sleep(0.5)
     ser.reset_input_buffer()
 
-    # 3. Read fresh encoder values now that the motors are emitting
+    # 5. Read fresh encoder values now that the motors are emitting
     #    real-time estimates.
     print("Reading current positions...")
     home = {}
@@ -280,7 +307,7 @@ def main():
         home[name] = p
         print(f"  {name:11s} (node {node}): {p:+.4f} rev")
 
-    # 4. Lock each motor at the freshly-read position. From here, the
+    # 6. Lock each motor at the freshly-read position. From here, the
     #    offset accumulator only moves the target at MAX_RATE_RAD_S,
     #    so even a deflected stick at startup can't snap the leg.
     for name, node in (('hip_abduct', NODE_HIP_ABDUCT),
@@ -289,11 +316,6 @@ def main():
         set_input_pos(ser, node, home[name])
     ser.flush()
     time.sleep(0.2)
-
-    # 5. Open the F710 last, so we don't burn 30 s waiting for a missing
-    #    gamepad just to discover the motors weren't going to respond.
-    print("Opening F710...")
-    pad = F710()
 
     # Hips use the analog accumulator (proven to work).
     # Knee uses tune.py-style discrete jogs: one button press = one set_input_pos.
@@ -304,7 +326,7 @@ def main():
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
     # Knee jog state. Hold B/X to move continuously.
-    KNEE_SPEED_REV_S = 10.0          # motor revs per second while button held
+    KNEE_SPEED_REV_S = 15.0          # motor revs per second while button held
     KNEE_UPDATE_HZ   = 30.0         # how often we send a fresh set_input_pos
     knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
     knee_period_s    = 1.0 / KNEE_UPDATE_HZ
