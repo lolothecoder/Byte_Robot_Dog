@@ -47,7 +47,7 @@ NODE_KNEE = 1
 
 GEAR_RATIO = 8.0  # GIM8010-8 = 8:1 motor revs per joint rev
 SIGN_HIP_ABDUCT = 1.0
-SIGN_HIP_PITCH = -1.0  # reversed vs URDF axis
+SIGN_HIP_PITCH = 1.0   # RY up = hip pitches forward
 SIGN_KNEE = 1.0
 
 # ---- Teleop tuning ---------------------------------------------------------
