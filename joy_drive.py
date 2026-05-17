@@ -303,13 +303,29 @@ def main():
     ]
     offset_rad = {j[5]: 0.0 for j in JOINTS}
 
-    # Knee jog state. Hold B/X to move continuously.
-    KNEE_SPEED_REV_S = 10.0          # motor revs per second while button held
-    KNEE_UPDATE_HZ   = 30.0         # how often we send a fresh set_input_pos
-    knee_step_rev    = KNEE_SPEED_REV_S / KNEE_UPDATE_HZ
-    knee_period_s    = 1.0 / KNEE_UPDATE_HZ
+    # Knee rest pose (never moves at runtime) and live commanded position
+    # (rate-limited by KNEE_SPEED_REV_S during a kick).
+    KNEE_SPEED_REV_S = 15.0          # motor revs/s — paces every knee phase
     knee_target_rev  = home['knee']
-    last_knee_send   = 0.0
+    knee_cmd_rev     = home['knee']
+
+    # FIFA-style charged kick on B. Hold to charge, release to fire.
+    # On release: windup (ramp back) -> brief dwell -> kick (ramp forward)
+    # -> return. Every phase ramps the setpoint at KNEE_SPEED_REV_S, so
+    # bumping that number makes the whole kick proportionally snappier
+    # (just like the old X/B jogs).
+    MAX_CHARGE_S     = 1.5           # full power after holding 1.5 s
+    MAX_KICK_REV     = 2.0           # forward swing amplitude on a max-power kick
+    WINDUP_RATIO     = 0.3           # windup amplitude as a fraction of kick amplitude
+    WINDUP_DWELL_S   = 0.1           # pause at the cocked pose before snapping forward
+    # 'back' = same direction as the old X-jog (+SIGN_KNEE in code);
+    # 'forward' = the kick direction (-SIGN_KNEE in code).
+    kick_state       = 'IDLE'        # 'IDLE' | 'CHARGING' | 'WINDING_UP' | 'KICKING' | 'RETURNING'
+    charge_start     = 0.0
+    windup_target    = home['knee']
+    fire_target      = home['knee']
+    dwell_end_at     = 0.0
+    last_charge_ratio = 0.0          # for status line
 
     # Per-joint clamp ranges in their native command units, anchored at home.
     LIMITS_RAD = {
@@ -360,6 +376,8 @@ def main():
     print("Hold RB to drive. Release RB: targets hold (no decay). Ctrl-C to quit.")
     print(f"  hip speed: {MAX_RATE_RAD_S:.2f} rad/s   "
           f"knee speed: {KNEE_SPEED_REV_S:.1f} motor rev/s")
+    print(f"  B: hold to charge a FIFA-style kick (max {MAX_CHARGE_S:.1f}s -> "
+          f"{MAX_KICK_REV:.1f} rev). Release fires windup -> kick at knee speed.")
     print(f"  limits: hip_abduct ±{math.degrees(HIP_ABDUCT_LIMIT_RAD):.0f}°  "
           f"hip_pitch ±{math.degrees(HIP_PITCH_LIMIT_RAD):.0f}°  "
           f"knee ±{math.degrees(KNEE_LIMIT_RAD):.0f}°")
@@ -370,7 +388,7 @@ def main():
     PRINT_PERIOD = 0.1  # 10 Hz; stdout cost at this rate is negligible vs the 20 ms tick budget
     while True:
         lx, ly, ry, rb = pad.state()
-        x_held, b_held, face_byte = pad.buttons()
+        _x_held, b_held, face_byte = pad.buttons()
         sticks = {'lx': lx, 'ly': ly, 'ry': ry}
 
         # Hips: continuous accumulator driven by analog sticks. Release = hold.
@@ -387,30 +405,83 @@ def main():
             offset_rev = sign * gear * offset_rad[name] / TAU
             set_input_pos(ser, node, home_rev + offset_rev)
 
-        # Knee: hold X (forward) or B (backward) to move at KNEE_SPEED_REV_S.
-        # Sends a fresh set_input_pos every knee_period_s while held — same
-        # discrete-command pattern as tune.py's `g <pos>`, just paced.
+        # Knee: B is the only knee input. Hold to charge a FIFA-style kick,
+        # release to fire. The fire sequence ramps the commanded setpoint
+        # at KNEE_SPEED_REV_S through windup (+SIGN_KNEE) -> dwell -> kick
+        # (-SIGN_KNEE) -> return. RB released during charge cancels; once
+        # WINDING_UP has begun the sequence runs to completion so the leg
+        # never freezes mid-swing.
         knee_now = time.monotonic()
-        if rb and (knee_now - last_knee_send) >= knee_period_s:
-            direction = (1 if x_held else 0) - (1 if b_held else 0)
-            if direction != 0:
-                knee_target_rev += direction * SIGN_KNEE * knee_step_rev
-                if knee_target_rev > knee_max_rev:
-                    knee_target_rev = knee_max_rev
-                elif knee_target_rev < knee_min_rev:
-                    knee_target_rev = knee_min_rev
-                set_input_pos(ser, NODE_KNEE, knee_target_rev)
-                last_knee_send = knee_now
+        knee_step_rev = KNEE_SPEED_REV_S * dt
+
+        if not rb:
+            if kick_state == 'CHARGING':
+                kick_state = 'IDLE'
+                last_charge_ratio = 0.0
+        elif kick_state == 'IDLE' and b_held:
+            kick_state = 'CHARGING'
+            charge_start = knee_now
+            last_charge_ratio = 0.0
+        elif kick_state == 'CHARGING':
+            charge_s = min(knee_now - charge_start, MAX_CHARGE_S)
+            last_charge_ratio = charge_s / MAX_CHARGE_S
+            if not b_held:
+                # Lock in amplitudes and the two target poses for the rest
+                # of the sequence. knee_target_rev stays put as the home
+                # we'll ramp back to.
+                kick_rev = last_charge_ratio * MAX_KICK_REV
+                windup_rev = WINDUP_RATIO * kick_rev
+                windup_target = max(knee_min_rev, min(knee_max_rev,
+                    knee_target_rev + SIGN_KNEE * windup_rev))
+                fire_target = max(knee_min_rev, min(knee_max_rev,
+                    knee_target_rev - SIGN_KNEE * kick_rev))
+                kick_state = 'WINDING_UP'
+
+        if kick_state == 'WINDING_UP':
+            if knee_cmd_rev != windup_target:
+                if knee_cmd_rev < windup_target:
+                    knee_cmd_rev = min(knee_cmd_rev + knee_step_rev, windup_target)
+                else:
+                    knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, windup_target)
+                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
+                if knee_cmd_rev == windup_target:
+                    dwell_end_at = knee_now + WINDUP_DWELL_S
+            elif knee_now >= dwell_end_at:
+                kick_state = 'KICKING'
+
+        if kick_state == 'KICKING':
+            if knee_cmd_rev != fire_target:
+                if knee_cmd_rev < fire_target:
+                    knee_cmd_rev = min(knee_cmd_rev + knee_step_rev, fire_target)
+                else:
+                    knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, fire_target)
+                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
+            else:
+                kick_state = 'RETURNING'
+
+        if kick_state == 'RETURNING':
+            if knee_cmd_rev != knee_target_rev:
+                if knee_cmd_rev < knee_target_rev:
+                    knee_cmd_rev = min(knee_cmd_rev + knee_step_rev, knee_target_rev)
+                else:
+                    knee_cmd_rev = max(knee_cmd_rev - knee_step_rev, knee_target_rev)
+                set_input_pos(ser, NODE_KNEE, knee_cmd_rev)
+            else:
+                kick_state = 'IDLE'
+                last_charge_ratio = 0.0
 
         ser.flush()
 
         now = time.monotonic()
         if now - last_print > PRINT_PERIOD:
             rlx, _rly, _rrx, rry = pad.raw()
+            bars = int(round(last_charge_ratio * 10))
+            charge_bar = '#' * bars + '-' * (10 - bars)
             sys.stdout.write(
                 f"\rRB={'1' if rb else '0'}  "
                 f"LX={rlx:3d} RY={rry:3d}  "
-                f"X={'1' if x_held else '0'} B={'1' if b_held else '0'}  "
+                f"B={'1' if b_held else '0'}  "
+                f"kick[{charge_bar}] {kick_state:10s}  "
                 f"knee_tgt={knee_target_rev:+.3f}    "
             )
             sys.stdout.flush()
