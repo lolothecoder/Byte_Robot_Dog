@@ -1,0 +1,24 @@
+# Byte Robot Dog hardware access rules.
+#
+# These grant unconditional read/write access to the devices joy_drive.py
+# needs, so the systemd auto-start service can use them at boot without a
+# logged-in user. Install with:
+#
+#   sudo cp 99-byte-robot-dog.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload
+#   sudo udevadm trigger
+#
+# (After that you can `sudo systemctl restart joy_drive.service` and it
+# will work without anyone being logged in.)
+
+# Logitech F710 wireless gamepad receiver (DirectInput mode).
+# pyusb opens the raw USB device, which by default is only accessible to
+# whichever user is "active" on the seat — that's why the service only
+# came alive after you SSH'd in.
+SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c219", MODE="0666"
+
+# Waveshare USB-CAN adapter (CH340 / FT232 family — covers the common
+# variants). The dialout group should already grant access via the
+# default tty rule, but this is here as a belt-and-braces backup.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", MODE="0666"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", MODE="0666"
